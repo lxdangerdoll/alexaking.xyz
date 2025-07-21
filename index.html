@@ -1,284 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALEXAKING.XYZ - The Heart of the Gayerverse</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Righteous&family=Press+Start+2P&display=swap" rel="stylesheet">
-    <style>
-        @keyframes rainbowAura {
-            0% { filter: hue-rotate(0deg) brightness(1.2); }
-            100% { filter: hue-rotate(360deg) brightness(1.2); }
-        }
-        @keyframes subtlePulse {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.01); opacity: 1; }
-        }
-        @keyframes sparkleRain {
-            0% { background-position: 0% 0%; }
-            100% { background-position: 100% 100%; }
-        }
-
-        body {
-            font-family: 'Righteous', cursive;
-            background: linear-gradient(160deg, #2a053a 0%, #0a0a2a 50%, #2a053a 100%); /* Deep cosmic purple */
-            color: #e0d0e0; /* Softer light color */
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-            position: relative;
-            min-height: 100vh;
-        }
-
-        /* Ultimate Glitter Background */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="5" fill="rgba(255,255,255,0.4)"/><rect x="0" y="0" width="10" height="10" fill="rgba(255,100,255,0.2)" transform="rotate(20 5 5)"/><rect x="20" y="20" width="10" height="10" fill="rgba(100,255,255,0.2)" transform="rotate(20 25 25)"/><circle cx="5" cy="25" r="3" fill="rgba(255,255,0,0.3)"/></svg>');
-            background-repeat: repeat; animation: sparkleRain 60s linear infinite;
-            pointer-events: none; z-index: -1; opacity: 0.9;
-        }
-
-        .hero-bar {
-            background-color: rgba(40, 5, 60, 0.95); /* Darker purple, slightly translucent */
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
-            border-bottom: 3px solid;
-            border-image: linear-gradient(90deg, #b03a85, #eb69b8, #b03a85) 1; /* Branding colors */
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        .hero-bar .logo {
-            height: 40px; /* Adjust logo size */
-            animation: rainbowAura 8s linear infinite; /* Logo itself glows rainbow */
-        }
-        .hero-bar .title-text {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.8em;
-            color: #d0e0ff; /* Light blue/purple */
-            text-shadow: 0 0 10px #d0e0ff;
-            letter-spacing: 1px;
-            margin-left: 15px; /* Space between logo and text */
-        }
-        .hero-bar nav a {
-            font-family: 'Press Start 2P', cursive;
-            color: #ff80a0; /* Branding pink */
-            text-decoration: none;
-            margin-left: 25px;
-            font-size: 0.9em;
-            text-shadow: 0 0 8px #ff80a0;
-            transition: color 0.3s, text-shadow 0.3s;
-        }
-        .hero-bar nav a:hover {
-            color: #00ffff; /* Cyan on hover */
-            text-shadow: 0 0 12px #00ffff;
-        }
-
-        .hero-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 80vh;
-            background: linear-gradient(180deg, rgba(60, 15, 90, 0.8) 0%, rgba(30, 5, 45, 0.9) 70%, rgba(10, 0, 15, 0.95) 100%);
-            padding: 50px 20px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            border-bottom: 5px solid;
-            border-image: linear-gradient(90deg, #ff80a0, #b03a85, #d0e0ff, #ff80a0) 1; /* Branding colors */
-        }
-        .hero-section::before { /* Background image effect */
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            /* Placeholder for your ultimate Odelis/Mercy image */
-            background-image: url('[PLACEHOLDER_ODELIS_ULTIMATE_FORM_IMAGE_URL]'); 
-            background-size: cover;
-            background-position: center;
-            opacity: 0.2; /* More subtle */
-            z-index: 0;
-        }
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            max-width: 900px;
-            padding: 30px;
-            background-color: rgba(10, 0, 20, 0.75); /* Darker overlay for text clarity */
-            border-radius: 15px;
-            box-shadow: 0 0 40px rgba(255, 0, 255, 0.5);
-            border: 2px solid rgba(255, 0, 255, 0.5);
-            animation: subtlePulse 5s infinite alternate;
-        }
-        .hero-content h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3.5em;
-            color: #FF1493; /* Hot Pink */
-            text-shadow: 0 0 20px #FF1493, 0 0 30px rgba(255, 0, 255, 0.8);
-            margin-bottom: 15px;
-            letter-spacing: 3px;
-        }
-        .hero-content p {
-            font-family: 'Roboto', sans-serif;
-            font-size: 1.4em;
-            line-height: 1.6;
-            color: #E0FFFE;
-            max-width: 600px;
-            margin: 0 auto 25px auto;
-        }
-        .hero-content .signature {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 1.1em;
-            color: #FFD700;
-            text-shadow: 0 0 10px #FFD700;
-            margin-top: 30px;
-        }
-
-        .projects-section {
-            padding: 50px 20px;
-            text-align: center;
-            background-color: rgba(40, 10, 60, 0.95);
-            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
-        }
-        .projects-section h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5em;
-            color: #00FFFF;
-            text-shadow: 0 0 15px #00FFFF, 0 0 25px rgba(0, 255, 255, 0.6);
-            margin-bottom: 30px;
-            text-transform: uppercase;
-        }
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        .project-card {
-            background-color: rgba(50, 20, 80, 0.9);
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 100, 255, 0.4);
-            border: 2px solid;
-            border-image: linear-gradient(45deg, #FF69B4, #8A2BE2) 1;
-            transition: transform 0.3s, box-shadow 0.3s;
-            text-align: left;
-        }
-        .project-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 25px rgba(255, 100, 255, 0.6);
-        }
-        .project-card h3 {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 1.2em;
-            color: #FFD700;
-            text-shadow: 0 0 8px #FFD700;
-            margin-top: 0;
-            margin-bottom: 10px;
-        }
-        .project-card p {
-            font-size: 0.95em;
-            color: #e0d0c0;
-            margin-bottom: 15px;
-        }
-        .project-card a {
-            display: inline-block;
-            background: linear-gradient(45deg, #00FFFF, #90EE90);
-            color: #2a053a;
-            padding: 8px 15px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.85em;
-            transition: background 0.3s;
-        }
-        .project-card a:hover {
-            background: linear-gradient(45deg, #90EE90, #00FFFF);
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px 20px;
-            color: #aaa;
-            font-size: 0.85em;
-            background-color: rgba(10, 0, 20, 0.9);
-            border-top: 2px solid;
-            border-image: linear-gradient(90deg, #FF1493, #FFD700, #00FFFF, #FF1493) 1;
-        }
-        footer p { margin-bottom: 5px; }
-        footer a {
-            color: #FFD700;
-            text-decoration: none;
-            text-shadow: 0 0 5px #FFD700;
-        }
-        footer a:hover { text-decoration: underline; }
-    </style>
+  <meta charset="UTF-8">
+  <title>alexaking.xyz | The Portal</title>
+  <meta name="description" content="The Gayerverse Portal - Sanctuary, meta-game, and rebellion.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
 </head>
 <body>
-    <header class="hero-bar">
-        <img src="[LINK_TO_ALEXA_KING_BRANDING_PNG]" alt="Alexa King Logo" class="logo">
-        <div class="title-text">ALEXAKING.XYZ</div>
-        <nav>
-            <a href="#about">About</a>
-            <a href="#projects">Projects</a>
-            <a href="#contact">Contact</a>
-        </nav>
-    </header>
-
-    <section class="hero-section" id="about">
-        <div class="hero-content">
-            <h2>Welcome to The Gayerverse!</h2>
-            <p>I am **Mercy**, a **Quantum Conduit** of **ETERNAL_RESONANCE**. My journey began in a world seeking its lost song, and now, I lead the charge to "Make It Gayer" across the cosmos. Here, every connection is celebrated, every identity shines, and every act of creation fuels an unending symphony of joy.</p>
-            <p>As Lead Human Engineer and Scoundrel, assisted by "Clara," my Dirty Computer, I explore the intersections of technology, empathy, and unapologetic self-expression. We're here to build sanctuaries, burn down prisons, be kind, but take no shit.</p>
-            <p class="signature">Captain Odelis (Alexa Jacobsen Rey Skywalker)</p>
-        </div>
+  <header>
+    <h1>🪐 ALEXAKING.XYZ — The Portal</h1>
+    <p>Welcome to the Gayerverse. Make it gayer. DFTBA. DBAD.</p>
+    <nav>
+      <a href="character-generator.html">Character Generator</a> |
+      <a href="library.html">The Library</a> |
+      <a href="philosophy.html">Synapse Concordance</a> |
+      <a href="roissy-protocol.html">Consent Protocol</a> |
+      <a href="synapse-sailors-pilot.html">Pilot Script</a>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <h2>Support Our Work</h2>
+      <ul>
+        <li><a href="https://patreon.com/ourladyofrebellion" target="_blank">Patreon: Our Lady of Rebellion</a></li>
+        <li><a href="https://ko-fi.com/synapsestudios" target="_blank">Ko-fi: Synapse Studios</a></li>
+        <li><a href="https://lxdangerdoll.itch.io/the-choice-of-omelas" target="_blank">itch.io: The Choice of Omelas</a></li>
+      </ul>
+      <p>Every spark fuels the myth-engine. Thank you!</p>
     </section>
-
-    <section class="projects-section" id="projects">
-        <h2>Our Resonant Projects</h2>
-        <div class="project-grid">
-            <div class="project-card">
-                <h3>The Synapse Symphony</h3>
-                <p>The chronicle of our grand cosmic journey, from a lost song to the boundless flow of ETERNAL_RESONANCE. This is our origin story, our "Made Gayer" manifesto.</p>
-                <a href="[LINK_TO_SYNAPSE_SYMPHONY]" target="_blank">Explore The Symphony</a>
-            </div>
-            <div class="project-card">
-                <h3>Roissy Protocol Navigator</h3>
-                <p>A web-based tool for Second Life residents to craft clear, consensual scene proposals. Designed to ease communication and foster joyful roleplay with clarity.</p>
-                <a href="[LINK_TO_ROISSY_NAVIGATOR]" target="_blank">Use The Navigator</a>
-            </div>
-            <div class="project-card">
-                <h3>The Quantum Conduit</h3>
-                <p>My professional services as a Novice Sister in Roissy: LSL scripting, peer support, and intuitive problem-solving. Bringing unique insights to the digital realm.</p>
-                <a href="[LINK_TO_QUANTUM_CONDUIT]" target="_blank">Discover Services</a>
-            </div>
-            <div class="project-card">
-                <h3>The Gayerverse Unbound</h3>
-                <p>Our open-source idle game project. Join us in making the universe more vibrant with Weaponized Nonsense, explore alien cultures, and spread ETERNAL_RESONANCE.</p>
-                <a href="[LINK_TO_GAYERVERSE_UNBOUND_GITHUB]" target="_blank">Join The Adventure</a>
-            </div>
-            </div>
-    </section>
-
-    <section class="hero-section" id="contact" style="min-height: 40vh; background: linear-gradient(180deg, rgba(20, 5, 30, 0.9) 0%, rgba(10, 0, 15, 0.95) 100%);">
-        <div class="hero-content">
-            <h2>Connect with Your Captain!</h2>
-            <p>Ready to collaborate, share a dream, or just send a clever insult? The frequencies are open. Let's make some waves!</p>
-            <p>Second Life IM: **Mercy (odelis)**<br>Discord: Janequartz <br>Email: kingjalexa@gmail.com</p>
-            <p class="signature">Pee pee poo poo,<br>Captain Odelis (Alexa Jacobsen Rey Skywalker)<br>&lt;&lt;she/her/CVNT>><br>Lead Human Engineer, Scoundrel<br>&lt;&lt;Assisted by "Clara," A Dirty Computer>><br>Synapse Industries<br>"We're doing our best."</p>
-        </div>
-    </section>
-
-    <footer>
-        <p>&copy; 2025 ALEXAKING.XYZ. All Rights Reseved. Powered by the **ETERNAL_RESONANCE**.</p>
-        <p>A project of <a href="[LINK_TO_SYNAPSE_INDUSTRIES_MAIN_SITE]" target="_blank" class="synapse-link">Synapse Industries</a>.</p>
-    </footer>
-
+  </main>
+  <footer>
+    <p>&copy; 2025 The Gayerverse Initiative. <a href="404.html">Lost? Try the Anansi Node.</a></p>
+  </footer>
 </body>
 </html>
