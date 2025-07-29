@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Governess Mission Terminal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes scanline {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 100%; }
+        }
+        :root {
+            --monitor-bg: #0a0a0a;
+            --text-amber: #ffb000;
+            --border-color: #555;
+            --surface-color: #1a1a1a;
+        }
+        body {
+            background-color: var(--monitor-bg);
+            color: var(--text-amber);
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            margin: 0;
+            padding: 20px;
+            text-shadow: 0 0 5px var(--text-amber);
+            position: relative;
+        }
+        body::after {
+            content: ' ';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+            background-size: 100% 4px;
+            animation: scanline 0.2s linear infinite;
+            pointer-events: none;
+            opacity: 0.2;
+        }
+        .terminal-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            max-width: 1400px;
+            margin: 20px auto;
+            border: 2px solid var(--border-color);
+            background: var(--surface-color);
+            padding: 20px;
+        }
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            text-align: center;
+            color: white;
+            grid-column: 1 / -1;
+            margin: 0 0 20px 0;
+        }
+        fieldset {
+            border: 1px solid var(--border-color);
+            padding: 20px;
+        }
+        legend {
+            padding: 0 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .control-group {
+            margin-bottom: 20px;
+        }
+        .control-group label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        .control-group select,
+        .control-group input,
+        .control-group textarea {
+            width: 100%;
+            background-color: #000;
+            border: 1px solid var(--border-color);
+            color: var(--text-amber);
+            padding: 10px;
+            font-family: 'VT323', monospace;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        .control-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        .deploy-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--text-amber);
+            color: #000;
+            border: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .deploy-btn:hover {
+            background-color: #ffcf40;
+        }
+        .preview-pane {
+            background: #111;
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+        .orb-selector { display: flex; align-items: center; background: #222; padding: 10px; border: 1px solid var(--border-color); }
+        .orb-selector img { width: 64px; height: 64px; border-radius: 50%; margin-right: 15px; }
+        .orb-selector .name { font-size: 1.5em; }
+        .orb-selector .status { font-size: 1em; color: #0f0; }
+    </style>
+</head>
+<body>
+    <h1>GOVERNESS MISSION TERMINAL</h1>
+    <div class="terminal-container">
+        <div class="controls-pane">
+            <fieldset>
+                <legend>TARGET</legend>
+                <div class="orb-selector">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMzIiIGN5PSIzMiIgcj0iMzAiIGZpbGw9IiMwMzAiIHN0cm9rZT0iI2ZmYjAwMCIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9zdmc+" alt="orb">
+                    <div>
+                        <div class="name">SUBJECT: CHARLIZE</div>
+                        <div class="status">STATUS: AWAITING DIRECTIVE</div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>ASSIGNMENT PARAMETERS</legend>
+                <div class="control-group">
+                    <label for="course-select">COURSE</label>
+                    <select id="course-select">
+                        <option>Women's History (Reading)</option>
+                        <option>Khan Academy (Core Skills)</option>
+                        <option>Elective (Art/Music)</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label for="task-select">TASK</label>
+                    <select id="task-select">
+                        <option>Reading Comprehension (The Giver)</option>
+                        <option>Historical Analysis (Persepolis)</option>
+                        <option>Essay Submission (1000 words)</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label for="nonsense-param">NONSENSE PARAMETER (TRAINING OVERLAY)</label>
+                    <textarea id="nonsense-param">Essay must be written in iambic pentameter. This will train rhythm and disciplined expression.</textarea>
+                </div>
+                <div class="control-group">
+                    <label for="deadline">DEADLINE</label>
+                    <input type="date" id="deadline">
+                </div>
+            </fieldset>
+            
+            <button class="deploy-btn">DEPLOY ASSIGNMENT</button>
+        </div>
+
+        <div class="preview-pane">
+            <p><strong>TO:</strong> Subject Charlize</p>
+            <p><strong>FROM:</strong> The Governess</p>
+            <p><strong>RE:</strong> Coursework Assignment 001</p>
+            <hr>
+            <p>Charlize,</p>
+            <p>You have two primary tasks for this cycle.</p>
+            <p>First, read Chapter 1 of "The Giver" by Lois Lowry. A digital copy has been provisioned to your standard datapad.</p>
+            <p>Second, you are to write a 500-word essay on the concept of 'Sameness' as presented in the chapter.</p>
+            <p>Your essay must adhere to the following **Nonsense Parameter:** you must not use any word containing the letter 'a'. This will train precision and creative vocabulary.</p>
+            <p>Deposit your completed essay in the assignment submission box no later than 0800 tomorrow.</p>
+            <p>Do not disappoint me.</p>
+            <p>-- Ms. O</p>
+        </div>
+    </div>
+</body>
+</html>

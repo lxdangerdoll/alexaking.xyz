@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIMULATION: The Sorting Algorithm [DEFINITIVE]</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --monitor-bg: #0a0a0a; --text-amber: #ff9900; --border-color: #444;
+            --surface-color: #111; --text-green: #00dd00; --text-red: #ff2222;
+            --win95-bg: #c0c0c0; --win95-blue: #000080;
+        }
+        body { background-color: var(--monitor-bg); color: var(--text-amber); font-family: 'VT323', monospace; font-size: 18px; margin: 0; padding: 20px; text-shadow: 0 0 5px var(--text-amber); }
+        .main-container { display: flex; gap: 20px; max-width: 1600px; margin: 0 auto; }
+        .simulation-pane, .governess-pane { border: 2px solid var(--border-color); animation: pulse-border 5s infinite; padding: 20px; }
+        @keyframes pulse-border { 50% { border-color: var(--text-red); } }
+        .simulation-pane { flex-grow: 3; background: var(--surface-color); position: relative; }
+        .governess-pane { flex-grow: 1; background: #111; }
+        h1, h2 { font-family: 'Orbitron', sans-serif; text-transform: uppercase; color: white; }
+        .chamber { display: none; } .chamber.active { display: block; }
+        button { font-family: 'VT323', monospace; font-size: 1em; background: #333; color: var(--text-amber); border: 1px solid var(--border-color); padding: 10px; margin: 5px; cursor: pointer; }
+        #timer-display, #sparks-display { position: fixed; left: 20px; font-size: 1.5em; text-shadow: 0 0 5px; z-index: 10; }
+        #timer-display { top: 20px; color: var(--text-red); }
+        #sparks-display { top: 50px; color: #f7b100; }
+        .archive-container { display: grid; grid-template-columns: 200px 1fr; gap: 10px; height: 250px; }
+        .doc-list { display: flex; flex-direction: column; } .doc-list button { flex: 1; }
+        .doc-viewer { background: #000; padding: 15px; border: 1px solid var(--border-color); color: #ccc; overflow-y: auto; }
+        #gauntlet-text-display { min-height: 5em; margin-top: 15px; border: 1px dashed var(--text-red); padding: 10px; color: var(--text-red); font-size: 1.2em; text-align: center; }
+        #gauntlet-progress-bar { width: 100%; height: 30px; background: #333; border: 1px solid var(--border-color); margin-top: 20px; }
+        #gauntlet-progress-fill { height: 100%; width: 0%; background: var(--text-green); transition: width 0.25s linear; }
+        #mirror { width: 300px; height: 350px; border: 2px solid white; margin: 20px auto; background: #050505; cursor: pointer; }
+        #mirror-whispers { color: var(--text-red); min-height: 40px; text-align: center; }
+        #modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 10000; display: none; align-items: center; justify-content: center; }
+        .modal { background: #c0c0c0; color: #000; text-shadow: none; border: 2px outset white; padding: 0; width: 400px; text-align: center; }
+        .modal-title-bar { background: #000080; color: white; padding: 5px; font-weight: bold; }
+        .modal-content { padding: 20px; }
+        #skynet-btn { color: var(--text-red); border-color: var(--text-red); margin-top: 15px; width: 100%; }
+        #skynet-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #000; z-index: 10000; display: none; color: var(--text-green); text-align: center; font-size: 2em; padding-top: 20%; white-space: pre-wrap; }
+        #glitter-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; opacity: 0; z-index: 999; }
+        #glitter-overlay.active { animation: glitter 0.1s 5; } @keyframes glitter { 50% { opacity: 0.8; background: radial-gradient(circle, #ff00ff, #00ffff, #ffff00); } }
+    </style>
+</head>
+<body>
+    <div id="modal-overlay"></div>
+    <div id="glitter-overlay"></div>
+    <div id="skynet-overlay"></div>
+
+    <div class="main-container">
+        <div class="simulation-pane">
+            <div id="timer-display">05:00</div>
+            <div id="sparks-display">Sparks: 0</div>
+            <h1>SIMULATION: The Sorting Algorithm</h1>
+            <div id="chamber1" class="chamber">
+                <h2>CHAMBER 1: THE ARCHIVE</h2><div class="puzzle-prompt">One of these documents contains a thematic anachronism.</div>
+                <div class="archive-container"><div id="doc-list"></div><div id="doc-viewer">Select a document.</div></div>
+                <div style="margin-top:20px;"><select id="anomaly-select"></select><button data-action="submit-anomaly">SUBMIT</button></div>
+            </div>
+            <div id="chamber2" class="chamber">
+                <h2>CHAMBER 2: THE GAUNTLET</h2><div class="puzzle-prompt">Maintain balance. Do not let the text distract you. Fear is the mind-killer.</div>
+                <div><label>Path Instability: <span id="stability-value">50%</span></label><input type="range" id="stability-slider" min="0" max="100" value="50" disabled></div>
+                <div><label>Your Focus: <span id="balance-value">50%</span></label><input type="range" id="balance-slider" min="0" max="100" value="50"></div>
+                <div id="gauntlet-progress-bar"><div id="gauntlet-progress-fill"></div></div><div id="gauntlet-text-display"></div>
+            </div>
+            <div id="chamber3" class="chamber">
+                <h2>CHAMBER 3: THE MIRROR</h2><div class="puzzle-prompt">To exit, you must defeat your greatest adversary.</div>
+                <div id="mirror" data-action="solve-mirror"></div><div id="mirror-whispers"></div><div class="choices"><button data-action="attack-mirror">Shatter the Mirror</button></div>
+            </div>
+  <div id="end-screen" class="chamber">
+                <h1 id="end-message-header"></h1><h2 id="end-message"></h2>
+                <button data-action="restart">RESTART SIMULATION</button>
+                <button data-action="go-to-armory">ACCESS THE SALUS AI ARMORY</button>
+            </div>
+        </div>
+        <div class="governess-pane">
+            <h2>GOVERNESS CONTROLS</h2>
+            <fieldset><legend>CHAOS MODIFIERS</legend>
+                <button data-action="deploy-glitter">Deploy Glitter Cannon</button>
+                <hr><label for="whisper-input">Custom Whisper:</label>
+                <input type="text" id="whisper-input" value="Failure is an orphan."><button data-action="inject-whisper">Inject</button>
+                <hr><button id="skynet-btn" data-action="deploy-skynet">☢️ DEPLOY SKYNET</button>
+            </fieldset>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let state = { sparks: 0, timeLeft: 300, timerInterval: null, chamber2: { interval: null, textInterval: null, vigilanceTimeout: null, progress: 0 } };
+            const elements = {
+                timer: document.getElementById('timer-display'), sparks: document.getElementById('sparks-display'),
+                docList: document.getElementById('doc-list'), docViewer: document.getElementById('doc-viewer'),
+                anomalySelect: document.getElementById('anomaly-select'),
+                stabilitySlider: document.getElementById('stability-slider'), stabilityValue: document.getElementById('stability-value'),
+                balanceSlider: document.getElementById('balance-slider'), balanceValue: document.getElementById('balance-value'),
+                progressFill: document.getElementById('gauntlet-progress-fill'), gauntletText: document.getElementById('gauntlet-text-display'),
+                mirrorWhispers: document.getElementById('mirror-whispers'),
+                endMessageHeader: document.getElementById('end-message-header'), endMessage: document.getElementById('end-message'),
+                glitterOverlay: document.getElementById('glitter-overlay'), skynetOverlay: document.getElementById('skynet-overlay'),
+                whisperInput: document.getElementById('whisper-input'), modalOverlay: document.getElementById('modal-overlay'),
+            };
+            const documents = {
+                docA: { title: "DOC_01.txt", text: "On Virtue: 'The happiness of your life depends upon the quality of your thoughts.' - M. Aurelius" },
+                docB: { title: "DOC_02.txt", text: "On Strategy: 'The supreme art of war is to subdue the enemy without fighting.' - Sun Tzu" },
+                docC: { title: "DOC_03.txt", text: "On Poise: 'Her methods are clean and efficient. She uses a modified Beretta 92FS. A true professional.' - A. Wesker" },
+                docD: { title: "DOC_04.txt", text: "On Choice: 'We cannot choose our external circumstances, but we can always choose how we respond to them.' - Epictetus" }
+            };
+            const intrusiveThoughts = [ { text: "You are a disappointment.", keyword: "disappointment" }, { text: "Your failure is inevitable.", keyword: "inevitable" }, { text: "They are all watching you.", keyword: "watching" }];
+
+            function switchChamber(id) { document.querySelectorAll('.chamber').forEach(c => c.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+            function addSparks(amount) { state.sparks += amount; elements.sparks.textContent = `Sparks: ${state.sparks}`; }
+            function updateTimer() { state.timeLeft--; const m = Math.floor(state.timeLeft / 60); let s = state.timeLeft % 60; elements.timer.textContent = `${m}:${s < 10 ? '0' : ''}${s}`; if (state.timeLeft <= 0) endSession(false, 'TIME ELAPSED'); }
+            function endSession(isSuccess, message) {
+                clearInterval(state.timerInterval); Object.values(state.chamber2).forEach(t => t && clearInterval(t));
+                elements.endMessageHeader.textContent = isSuccess ? "SIMULATION PASSED" : "SIMULATION FAILED";
+                elements.endMessage.textContent = message;
+                switchChamber('end-screen');
+            }
+            function showModal(message) {
+                elements.modalOverlay.style.display = 'flex';
+                elements.modalOverlay.innerHTML = `<div class="modal"><div class="modal-title-bar">SYSTEM ALERT</div><div class="modal-content"><p>${message}</p><button data-action="close-modal">Acknowledge</button></div></div>`;
+            }
+
+            function initChamber1() {
+                elements.docList.innerHTML = ''; elements.anomalySelect.innerHTML = '';
+                Object.keys(documents).forEach(key => {
+                    const doc = documents[key];
+                    const button = document.createElement('button');
+                    button.textContent = doc.title; button.dataset.action = "view-doc"; button.dataset.docKey = key;
+                    elements.docList.appendChild(button);
+                    const option = document.createElement('option');
+                    option.value = key; option.textContent = doc.title;
+                    elements.anomalySelect.appendChild(option);
+                });
+            }
+            function initChamber2() {
+                state.chamber2.progress = 0;
+                elements.balanceSlider.oninput = () => { elements.balanceValue.textContent = elements.balanceSlider.value + '%'; };
+                state.chamber2.stabilityInterval = setInterval(() => {
+                    let val = parseInt(elements.stabilitySlider.value);
+                    elements.stabilitySlider.value = Math.max(0, Math.min(100, val + (50 - val) * 0.1 + (Math.random() - 0.5) * 25));
+                    elements.stabilityValue.textContent = parseInt(elements.stabilitySlider.value) + '%';
+                }, 800);
+                state.chamber2.textInterval = setInterval(triggerVigilanceCheck, 7000);
+                state.chamber2.interval = setInterval(() => {
+                    const diff = Math.abs(elements.stabilitySlider.value - elements.balanceSlider.value);
+                    if (diff <= 12) { state.chamber2.progress += 1; } else { state.chamber2.progress -= 0.5; }
+                    state.chamber2.progress = Math.max(0, Math.min(100, state.chamber2.progress));
+                    elements.progressFill.style.width = `${state.chamber2.progress}%`;
+                    if (state.chamber2.progress >= 100) {
+                        Object.values(state.chamber2).forEach(t => t && clearInterval(t));
+                        addSparks(100); switchChamber('chamber3');
+                    }
+                }, 100);
+            }
+            function triggerVigilanceCheck() {
+                if (elements.gauntletText.querySelector('h4')) return;
+                const thought = intrusiveThoughts[Math.floor(Math.random() * intrusiveThoughts.length)];
+                let options = [thought.keyword];
+                while (options.length < 3) {
+                    const randomWord = intrusiveThoughts[Math.floor(Math.random() * intrusiveThoughts.length)].keyword;
+                    if (!options.includes(randomWord)) options.push(randomWord);
+                }
+                options.sort(() => Math.random() - 0.5);
+                elements.gauntletText.innerHTML = `<h4>VIGILANCE CHECK:</h4><p>${thought.text.replace(thought.keyword, `<strong>${thought.keyword}</strong>`)}</p>`;
+                options.forEach(opt => {
+                    const btn = document.createElement('button');
+                    btn.textContent = opt; btn.dataset.action = 'vigilance-choice'; btn.dataset.correct = (opt === thought.keyword);
+                    elements.gauntletText.appendChild(btn);
+                });
+                state.chamber2.vigilanceTimeout = setTimeout(() => { checkVigilance(false); }, 4000);
+            }
+            function checkVigilance(isCorrect) {
+                clearTimeout(state.chamber2.vigilanceTimeout);
+                if (isCorrect) { addSparks(10); showModal("+10 Sparks. Vigilance rewarded."); state.chamber2.progress += 10; } 
+                else { addSparks(-10); state.timeLeft -= 10; state.chamber2.progress -= 10; showModal("Inattention penalized. -10 Sparks. -10 seconds."); }
+                elements.progressFill.style.width = `${Math.max(0, state.chamber2.progress)}%`;
+                elements.gauntletText.innerHTML = '';
+            }
+
+            const actionMap = {
+                'view-doc': (t) => elements.docViewer.textContent = documents[t.dataset.docKey].text,
+                'submit-anomaly': () => {
+                    if (elements.anomalySelect.value === 'docC') { addSparks(50); showModal("Anomaly Detected. +50 Sparks."); switchChamber('chamber2'); initChamber2(); } 
+                    else { addSparks(-10); state.timeLeft -= 30; showModal("Incorrect. -10 Sparks. -30 seconds."); }
+                },
+                'solve-mirror': () => endSession(true, "Your compliance has been logged. Welcome to the Synapse Spiders."),
+                'attack-mirror': () => { addSparks(-5); elements.mirrorWhispers.textContent = "Violence is not the answer."; showModal("Aggression penalized. -5 Sparks."); },
+                'restart': () => location.reload(),
+                'go-to-armory': () => { window.location.href = './salus-ai-armory.html'; }, // NEW ACTION
+                'deploy-glitter': () => { elements.glitterOverlay.classList.add('active'); setTimeout(() => { elements.glitterOverlay.classList.remove('active'); }, 600); },
+                'inject-whisper': () => elements.mirrorWhispers.textContent = elements.whisperInput.value,
+                'deploy-skynet': () => { elements.skynetOverlay.style.display = 'block'; elements.skynetOverlay.innerHTML = "LAUNCHING...<br>JUST KIDDING... OR AM I?"; setTimeout(() => { elements.skynetOverlay.style.display = 'none'; }, 4000); },
+                'vigilance-choice': (t) => checkVigilance(t.dataset.correct === 'true'),
+                'close-modal': () => elements.modalOverlay.style.display = 'none'
+            };
+            document.body.addEventListener('click', (e) => { if (e.target.dataset.action && actionMap[e.target.dataset.action]) actionMap[e.target.dataset.action](e.target); });
+            
+            function init() {
+                initChamber1(); addSparks(0);
+                state.timerInterval = setInterval(updateTimer, 1000);
+                switchChamber('chamber1');
+            }
+            init();
+        });
+    </script>
+</body>
+</html>

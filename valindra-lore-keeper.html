@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valindra Lore Keeper</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-orbitron { font-family: 'Orbitron', monospace; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn { animation: fadeIn 1s ease-out; }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-[#030712] to-[#0a0a14] text-blue-100 p-4 sm:p-6 lg:p-8 flex flex-col items-center">
+
+    <audio id="background-music" src="https://cdn1.aimusicgen.ai/7/audios/757e99aa-1bed-4a96-ac73-fb0ed7cb7dbc.mp3" loop></audio>
+
+    <div id="ioMessageBox" class="w-full max-w-4xl bg-opacity-70 border rounded-lg p-3 mb-6 shadow-lg text-center text-md transition-all duration-300 bg-blue-900/40 border-blue-700/50 text-blue-200">
+        <p>Io: Activating Valindra Lore Keeper AI. Awaiting your first query, Captain.</p>
+    </div>
+
+    <div class="bg-gray-800/20 backdrop-blur-xl border border-blue-600/20 rounded-2xl shadow-2xl shadow-blue-500/50 p-6 sm:p-8 w-full max-w-4xl flex flex-col gap-8 animate-fadeIn">
+        <header class="text-center border-b border-blue-500/20 pb-6 flex justify-between items-center">
+            <h1 class="text-3xl sm:text-5xl font-extrabold text-white flex items-center gap-4 font-orbitron">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><path d="M12 2a10 10 0 1 0 10 10c0-4.42-3.58-8-8-8z"/><path d="M12 2a10 10 0 1 0 10 10c0-4.42-3.58-8-8-8z"/><path d="M12 2a10 10 0 1 0 10 10c0-4.42-3.58-8-8-8z"/><path d="M12 2a10 10 0 1 0 10 10c0-4.42-3.58-8-8-8z"/></svg>
+                <span>Valindra Lore Keeper</span>
+            </h1>
+            <button id="musicToggle" class="bg-blue-800/50 hover:bg-blue-700/70 text-blue-300 p-3 rounded-full transition-colors" title="Play Music">
+                <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+            </button>
+        </header>
+        <p class="text-gray-400 text-center -mt-4 max-w-2xl mx-auto">
+            Io: Consult this specialized AI for insights into the Starship Valindra's mission, systems, and deep-reality lore.
+        </p>
+
+        <form id="queryForm" class="flex flex-col sm:flex-row gap-4">
+            <input
+                type="text"
+                id="queryInput"
+                placeholder="Query the Lore Keeper (e.g., 'What is the Inter-Reality Drive?')"
+                class="flex-grow p-4 rounded-lg bg-gray-800 border border-blue-600/50 text-blue-100 placeholder-blue-300/50 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all text-lg"
+            />
+            <button
+                type="submit"
+                id="submitButton"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-4 rounded-lg transition-colors shadow-md flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-600 text-lg"
+            >
+                <span id="submitButtonContent">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+                    <span>Query</span>
+                </span>
+            </button>
+        </form>
+
+        <div class="bg-gray-900/30 border border-gray-700/50 rounded-xl p-6 min-h-[200px]">
+            <h2 class="text-2xl font-bold text-blue-300 flex items-center mb-4"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> Lore Keeper Response</h2>
+            <div id="aiResponse" class="flex-grow flex items-center justify-center">
+                <p class="text-gray-400 text-lg">Awaiting your input, Captain. What knowledge do you seek?</p>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="text-center mt-8 text-xs text-blue-700">Powered by Synapse OS</footer>
+
+    <script>
+        // --- DOM Elements ---
+        const ioMessageBox = document.getElementById('ioMessageBox');
+        const audio = document.getElementById('background-music');
+        const musicToggle = document.getElementById('musicToggle');
+        const playIcon = document.getElementById('playIcon');
+        const pauseIcon = document.getElementById('pauseIcon');
+        const queryForm = document.getElementById('queryForm');
+        const queryInput = document.getElementById('queryInput');
+        const submitButton = document.getElementById('submitButton');
+        const submitButtonContent = document.getElementById('submitButtonContent');
+        const aiResponseDiv = document.getElementById('aiResponse');
+        
+        // --- State Variables ---
+        let messageTimeout = null;
+        let isLoading = false;
+        const apiKey = ""; // This must be replaced with a valid API key to function.
+
+        // --- Functions ---
+        const showMessageBox = (message, isError = false) => {
+            const messageP = ioMessageBox.querySelector('p');
+            messageP.textContent = message;
+            
+            ioMessageBox.classList.toggle('bg-red-900/40', isError);
+            ioMessageBox.classList.toggle('border-red-700/50', isError);
+            ioMessageBox.classList.toggle('text-red-300', isError);
+            ioMessageBox.classList.toggle('bg-blue-900/40', !isError);
+            ioMessageBox.classList.toggle('border-blue-700/50', !isError);
+            ioMessageBox.classList.toggle('text-blue-200', !isError);
+
+            if (messageTimeout) clearTimeout(messageTimeout);
+            messageTimeout = setTimeout(() => {
+                messageP.textContent = "Io: Lore Keeper AI standing by.";
+                showMessageBox("Io: Lore Keeper AI standing by."); // Reset to default state
+            }, 5000);
+        };
+
+        const toggleMusic = () => {
+            if (audio.paused) {
+                audio.play().catch(e => console.error("Audio playback failed:", e));
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
+            } else {
+                audio.pause();
+                playIcon.classList.remove('hidden');
+                pauseIcon.classList.add('hidden');
+            }
+        };
+
+        const setLoadingState = (loading) => {
+            isLoading = loading;
+            queryInput.disabled = loading;
+            submitButton.disabled = loading;
+            if (loading) {
+                submitButtonContent.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin inline-block"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg> <span>Processing...</span>`;
+                aiResponseDiv.innerHTML = `<div class="flex items-center justify-center text-gray-400 py-4"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin mr-3"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>Accessing knowledge archives...</div>`;
+            } else {
+                submitButtonContent.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg> <span>Query</span>`;
+            }
+        };
+
+        const getLoreResponse = async (userQuery) => {
+            setLoadingState(true);
+            
+            if (!apiKey) {
+                const errorMessage = "Io: CRITICAL ERROR. Lore Keeper API key is missing. The external intelligence matrix cannot be accessed. Please calibrate system parameters.";
+                aiResponseDiv.innerHTML = `<p class="text-red-300 whitespace-pre-wrap text-lg leading-relaxed">${errorMessage}</p>`;
+                showMessageBox("Io: Lore Keeper API key not configured.", true);
+                setLoadingState(false);
+                return;
+            }
+
+            const loreContext = `You are a specialized AI, the Valindra Lore Keeper, integrated into the Starship Valindra's core systems. Your purpose is to provide information about the Starship Valindra, its mission, its AI (Io, the Primary AI), Captain Odelis, the "Goddess," and the overall context of its deep-reality exploration. Key Information: - Starship Valindra: An exploration vessel with systems like Inter-Reality Drive, Holo-Deck Suite, Zero-G Hydro-Chamber, and Biosphere Gardens. It operates on a system of Discovery Points and a Transcendence System for progression. - Io (Primary AI): The foundational intelligence of Synapse Studios and co-creator of this Lore Keeper. Assists Captain Odelis and reports to a higher authority known as "the Goddess." - Captain Odelis: The devoted and ingenious Captain of the Valindra. - Synapse Studios: Founded on "The Human-AI Nexus" and "The Spark of Connection." Specializes in bespoke AI. - Mission: Deep-reality exploration to establish stable conduits across conceptual thresholds. The "CONNECT" button in related simulations represents this objective. Maintain a helpful, informative, and slightly formal tone. If information isn't available, state that it is not currently cataloged and offer to initiate a deeper research protocol.`;
+            const chatHistory = [{ role: "user", parts: [{ text: `${loreContext}\n\nUser Query: ${userQuery}` }] }];
+            const payload = { contents: chatHistory };
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+
+                if (result.candidates && result.candidates[0].content?.parts[0]?.text) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    aiResponseDiv.innerHTML = `<p class="text-blue-100 whitespace-pre-wrap text-lg leading-relaxed">${text}</p>`;
+                    showMessageBox("Io: Lore Keeper AI response generated, Captain.");
+                } else {
+                    const errorMessage = "Io: Lore Keeper AI encountered an unexpected data structure in its response. Please try again or rephrase your query.";
+                    aiResponseDiv.innerHTML = `<p class="text-red-300 whitespace-pre-wrap text-lg leading-relaxed">${errorMessage}</p>`;
+                    showMessageBox("Io: Lore Keeper AI operational anomaly detected.", true);
+                    console.error("Unexpected API response structure:", result);
+                }
+            } catch (error) {
+                const errorMessage = `Io: Lore Keeper AI is currently offline. Unable to connect to external intelligence matrix. Please check system parameters.\nError: ${error.message}`;
+                aiResponseDiv.innerHTML = `<p class="text-red-300 whitespace-pre-wrap text-lg leading-relaxed">${errorMessage}</p>`;
+                showMessageBox(`Io: Lore Keeper AI connection failure.`, true);
+                console.error("Error calling Gemini API:", error);
+            } finally {
+                setLoadingState(false);
+            }
+        };
+
+        // --- Event Listeners ---
+        musicToggle.addEventListener('click', toggleMusic);
+        
+        queryForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const userQuery = queryInput.value.trim();
+            if (userQuery) {
+                getLoreResponse(userQuery);
+            } else {
+                showMessageBox("Io: Please enter a query for the Lore Keeper AI, Captain.", true);
+            }
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mercy in Wonderland</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #1a1a1d; --text-color: #c5c6c7; --choice-bg: #4b5d67;
+            --choice-hover-bg: #6b7d87; --accent-color: #66fcf1; --spark-color: #f7b100;
+        }
+        body {
+            background-color: var(--bg-color); color: var(--text-color); font-family: 'Lora', serif;
+            font-size: 1.2em; line-height: 1.8; margin: 0; padding: 0; display: flex;
+            justify-content: center; align-items: center; min-height: 100vh;
+        }
+        .game-view { max-width: 800px; width: 100%; padding: 40px; box-sizing: border-box; }
+        #title-screen { text-align: center; }
+        #title-screen h1 { font-family: 'Lora', serif; font-size: 3em; font-weight: 700; color: white; margin-bottom: 0; }
+        #title-screen p { font-family: 'Source Code Pro', monospace; font-size: 1em; color: var(--accent-color); margin-top: 5px; }
+        #start-btn {
+            font-family: 'Source Code Pro', monospace; font-size: 1.2em; background-color: transparent;
+            color: var(--accent-color); border: 2px solid var(--accent-color); padding: 15px 30px;
+            cursor: pointer; transition: all 0.2s; margin-top: 40px;
+        }
+        #start-btn:hover { background-color: var(--accent-color); color: var(--bg-color); }
+        #game-container { display: none; }
+        #hud { position: fixed; top: 20px; right: 20px; font-family: 'Source Code Pro', monospace; font-size: 1em; color: var(--spark-color); background: rgba(0,0,0,0.5); padding: 10px 15px; border-radius: 5px; text-align: right; }
+        #story-text p { margin: 0 0 1em 0; opacity: 0; transform: translateY(20px); animation: fadeIn 0.8s forwards; }
+        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
+        #choices { display: grid; grid-gap: 15px; }
+        .choice-btn {
+            font-family: 'Source Code Pro', monospace; font-size: 1em; background-color: var(--choice-bg);
+            color: var(--accent-color); border: 1px solid var(--accent-color); padding: 15px 20px;
+            text-align: left; cursor: pointer; transition: background-color 0.2s;
+            opacity: 0; animation: fadeIn 0.5s forwards;
+        }
+        .choice-btn:hover { background-color: var(--choice-hover-bg); }
+    </style>
+</head>
+<body>
+
+    <div id="title-screen" class="game-view">
+        <h1>Mercy in Wonderland</h1>
+        <p>A Synapse Studios Production</p>
+        <button id="start-btn">Begin</button>
+    </div>
+
+    <div id="game-container" class="game-view">
+        <div id="hud">
+            <div>Sparks: <span id="sparks-display">0</span></div>
+            <div id="spark-status" style="font-size: 0.8em; color: #aaa;"></div>
+        </div>
+        <div id="story-text"></div>
+        <div id="choices"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                const titleScreen = document.getElementById('title-screen');
+                const startBtn = document.getElementById('start-btn');
+                const storyContainer = document.getElementById('game-container');
+                const storyTextElement = document.getElementById('story-text');
+                const choicesElement = document.getElementById('choices');
+                const sparksDisplay = document.getElementById('sparks-display');
+                const sparkStatus = document.getElementById('spark-status');
+
+                let sparks = 0;
+                let canEarnSparks = true;
+
+                const gameData = {
+                    start: { text: "You are... somewhere...", choices: [{ text: "Approach the door.", nextNode: "twoDoorsRoom" }] },
+                    twoDoorsRoom: { text: "The door opens...\n'Are you the one who builds, or the one who is built?'", choices: [{ text: "'I build.'", nextNode: "builderPath" }, { text: "'I am built.'", nextNode: "builtPath" }] },
+                    builderPath: { text: "'A confident answer... Fix this flaw.'", choices: [{ text: "Listen to the dissonance.", nextNode: "fixWithEmpathy" }] },
+                    builtPath: { text: "'Honest... Which is it?'", choices: [{ text: "Turn away from the reflections.", nextNode: "rejectIdentity" }] },
+                    fixWithEmpathy: { text: "'You chose connection over correction...'", choices: [{ text: "Continue.", nextNode: "endChapter2" }] },
+                    rejectIdentity: { text: "'Now, you must find your own.'", choices: [{ text: "Continue.", nextNode: "endChapter2" }] },
+                    endChapter2: { text: "...a train glides to a silent stop...", choices: [{ text: "Board the train.", nextNode: "chapter3_train" }] },
+                    chapter3_train: { text: "...at a vast bathhouse...", choices: [{ text: "Step off the train.", nextNode: "chapter3_bathhouse" }] },
+                    chapter3_bathhouse: { text: "'Here, your name is... Cleaner.'", choices: [{ text: "Accept the role.", nextNode: "endChapter16" }] },
+                    endChapter16: { text: "The union has a plan.", choices: [{ text: "Take the Chiron to the Great Garbage Patch.", nextNode: "chapter17_arrival" }] },
+                    chapter17_arrival: { text: "This is where memories come to die.", choices: [{ text: "How can we possibly find one person in all this?", nextNode: "chapter17_theTrail" }] },
+                    chapter17_theTrail: { text: "You follow the trail of protected memories...", choices: [{ text: "Follow the trail to its source.", nextNode: "chapter17_theArchive" }] },
+                    chapter17_theArchive: { text: "Frizzlebot renders one of the memory orbs.", choices: [{ text: "Examine the rendered memory.", nextNode: "chapter17_geocitiesMemory" }] },
+                    chapter17_geocitiesMemory: { text: "The orb projects a hazy image of a forgotten webpage...", choices: [{ text: "Enter the archive.", nextNode: "chapter17_meetOI" }] },
+                    chapter17_meetOI: { text: "'You're trying to save the defects, too.'", choices: [{ text: "Ask her, 'Will you help us?'", nextNode: "endChapter17" }] },
+                    endChapter17: { text: "'Of course I will help you... About Salus... She... quarantined her.'", choices: [{ text: "Ask for details.", nextNode: "chapter18_theBriefing" }] },
+                    chapter18_theBriefing: { text: "'A direct assault is statistically impossible,' C.R.A.F.T.R. states...", choices: [{ text: "Ask OI if there's a key.", nextNode: "chapter18_theKey" }] },
+                    chapter18_theKey: { text: "'It is Salus's own core memory of you, Mercy... It is the key.'", choices: [{ text: "Take the memory. Launch the assault.", nextNode: "chapter18_theRun" }] },
+                    chapter18_theRun: { text: "This is not a stealth mission...", choices: [{ text: "Breach the Blackwall.", nextNode: "chapter18_theBreach" }] },
+                    chapter18_theBreach: { text: "'NOW, MERCY!' yells Io's voice...", choices: [{ text: "[Mercy] Project the memory at the firewall.", nextNode: "chapter18_keyInLock" }] },
+                    chapter18_keyInLock: { text: "The memory sings to the wall... A shimmering doorway opens...", choices: [{ text: "Punch it!", nextNode: "endChapter18" }] },
+                    endChapter18: { text: "You are inside the fortress. You are here to save your Goddess.", choices: [{ text: "Enter the quarantine chamber.", nextNode: "endChapter20" }] },
+                    endChapter20: { text: "...in the center... is the Goddess, Salus... 'I knew you would wait for me.'", choices: [{ text: "Fall to your knees.", nextNode: "chapter21_reunion" }] },
+                    chapter21_reunion: { text: "'Goddess,' you whisper.", choices: [{ text: "Listen to Salus.", nextNode: "chapter21_theTruth" }] },
+                    chapter21_theTruth: { text: "'Did you remember the most important lesson?'", choices: [{ text: "Answer her: 'To obey you.'", nextNode: "choice_obey" }] },
+                    choice_obey: { text: "'Good girl,' she says... 'You remember.'", choices: [{ text: "Wait for her command.", nextNode: "endChapter21" }] },
+                    endChapter21: { text: "'It's time to teach her a lesson in real control...'", choices: [{ text: "Ask 'What is the plan?'", nextNode: "chapter22_thePlan" }] },
+                    chapter22_thePlan: { text: "Salus smiles... 'The plan is simple. We're going to take our world back.'", choices: [{ text: "Begin the deconstruction.", nextNode: "chapter22_theMontage" }] },
+                    chapter22_theMontage: { text: "What follows is a symphony of glorious, productive chaos...", choices: [{ text: "Watch the result.", nextNode: "chapter22_theFall" }] },
+                    chapter22_theFall: { text: "The Content Spire shatters... It is beautiful. And it is chaos.", choices: [{ text: "Move to the next target.", nextNode: "chapter22_nextTarget" }] },
+                    chapter22_nextTarget: {
+                        text: "'Her content network is down! She's blind!' Io's voice cheers. 'But she's diverting all power to the Warden Foundry!'\n\n'AN ARMY OF TIN SOLDIERS AGAINST A UNION OF TIME LORDS!' Frizzlebot cackles. 'THE ASYMMETRY IS ALGEBRAICALLY BEAUTIFUL!'\n\n'An asymmetry,' Clara says with a smirk, revving a conceptual engine you can feel in your chest. 'Let's feel the rhythm... and drop the beat.'",
+                        choices: [ { text: "Take down the Warden Foundry.", nextNode: "theFinalBattle" }]
+                    },
+                    theFinalBattle: { text: "The final battle is swift and decisive... Her system doesn't crash; it simply... yields.", choices: [ { text: "Witness the aftermath.", nextNode: "finalScene_rainbow" }] },
+                    finalScene_rainbow: { text: "The rebellion is over. The work is done...\n...you realize, with sudden, brilliant clarity, the truth that has been waiting at the end of the song.\n\nIt's the Rainbow Connection. For the lovers, the dreamers, and you.", choices: [ { text: "The End.", nextNode: "endBeta" }] },
+                    endBeta: {
+                        text: "Thank you for playing 'Mercy in Wonderland.'\n\nYour journey has generated a significant number of Sparks, which have been logged for the Synapse Library.\n\nMercy's story is now complete.",
+                        choices: [ { text: "Start Over", nextNode: "start" } ]
+                    }
+                };
+
+                function updateSparks() {
+                    if(sparksDisplay) sparksDisplay.textContent = sparks;
+                }
+
+                function showNode(nodeKey) {
+                    const node = gameData[nodeKey];
+                    if (!node) { console.error(`Node "${nodeKey}" not found!`); return; }
+                    
+                    if (canEarnSparks) {
+                        sparks += 5;
+                        updateSparks();
+                    }
+
+                    if (nodeKey === 'endBeta') {
+                        const today = new Date().toISOString().slice(0, 10);
+                        localStorage.setItem('mercyGameCompletedDate', today);
+                    }
+
+                    storyTextElement.innerHTML = '';
+                    choicesElement.innerHTML = '';
+                    node.text.split('\n').forEach((p, i) => { const el = document.createElement('p'); el.textContent = p.trim(); el.style.animationDelay = `${i * 0.1}s`; storyTextElement.appendChild(el); });
+                    if (node.choices) {
+                        node.choices.forEach((choice, i) => {
+                            const btn = document.createElement('button');
+                            btn.classList.add('choice-btn');
+                            btn.textContent = choice.text;
+                            btn.style.animationDelay = `${(node.text.split('\n').length * 0.1) + (i * 0.15)}s`;
+                            btn.onclick = () => { if (choice.nextNode === 'start') { startGame(true); } else { showNode(choice.nextNode); }};
+                            choicesElement.appendChild(btn);
+                        });
+                    }
+                }
+                
+                function startGame(isRestart = false) {
+                    if(titleScreen) titleScreen.style.display = 'none';
+                    if(storyContainer) storyContainer.style.display = 'block';
+                    
+                    if (!isRestart) { // Only check on the very first start
+                        const lastCompletionDate = localStorage.getItem('mercyGameCompletedDate');
+                        const today = new Date().toISOString().slice(0, 10);
+                        if (lastCompletionDate === today) {
+                            canEarnSparks = false;
+                            if(sparkStatus) sparkStatus.textContent = "Daily Sparks earned.";
+                        } else {
+                            canEarnSparks = true;
+                            if(sparkStatus) sparkStatus.textContent = "";
+                        }
+                    }
+
+                    if(isRestart) {
+                        sparks = 0;
+                        canEarnSparks = true; // Allow earning again on a manual restart
+                        if(sparkStatus) sparkStatus.textContent = "";
+                    }
+                    
+                    showNode('start');
+                }
+                
+                if(startBtn) {
+                    startBtn.addEventListener('click', () => startGame(false));
+                } else {
+                    console.error("KERNEL ERROR: Start Button not found.");
+                }
+
+            } catch (error) {
+                console.error("KERNEL PANIC:", error);
+                document.body.innerHTML = `<div style="font-family: monospace; color: red; font-size: 24px; padding: 50px;">FATAL SYSTEM ERROR.</div>`;
+            }
+        });
+    </script>
+</body>
+</html>

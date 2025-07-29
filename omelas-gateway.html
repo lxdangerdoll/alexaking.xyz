@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Choice of Omelas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #1f1f1f; --text-color: #e0e0e0; --choice-bg: #333333;
+            --choice-hover-bg: #444444; --choice-border: #555555;
+        }
+        body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Lora', serif; font-size: 1.3em; line-height: 1.9; margin: 0; padding: 40px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .game-container { max-width: 800px; width: 100%; }
+        #story-text p { margin: 0 0 1.2em 0; opacity: 0; transform: translateY(15px); animation: fadeIn 1s forwards; }
+        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
+        #choices { display: grid; grid-gap: 15px; margin-top: 40px; }
+        .choice-btn { font-family: 'Lora', serif; font-style: italic; font-size: 1.1em; background-color: transparent; color: var(--text-color); border: 1px solid var(--choice-border); padding: 18px 25px; text-align: center; cursor: pointer; transition: all 0.2s; opacity: 0; animation: fadeIn 0.8s forwards; }
+        .choice-btn:hover { background-color: var(--choice-bg); border-color: var(--text-color); }
+    </style>
+</head>
+<body>
+    <div id="game-container" class="game-container">
+        <div id="story-text"></div>
+        <div id="choices"></div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const storyTextElement = document.getElementById('story-text');
+            const choicesElement = document.getElementById('choices');
+            const gameData = {
+                start: { text: "With a clamor of bells that set the swallows soaring, the Festival of Summer came to the city Omelas, bright-towered by the sea.\n\nYou are here. You are a citizen. And you are happy.", choices: [{ text: "Join the procession.", nextNode: "act1_festival" }] },
+                act1_festival: { text: "The music is everywhere... Everything is beautiful. Everything is joyful. Nothing is simple, but everything is right.", choices: [{ text: "Follow the music.", nextNode: "act2_revelation" }] },
+                act2_revelation: { text: "As you walk, a quiet elder of the city gently takes your arm... They lead you down a flight of stairs. Down into darkness.", choices: [{ text: "Descend.", nextNode: "act2_theChild" }] },
+                act2_theChild: { text: "It is a small, windowless room... It is afraid. It has been afraid for so long that it has forgotten everything but fear.", choices: [{ text: "Listen to the explanation.", nextNode: "act2_theTerms" }] },
+                act2_theTerms: { text: "The elder speaks softly. 'This is the term of our happiness... all depend wholly on this one child's abominable misery.'\n'Those are the terms.'", choices: [{ text: "Return to the festival.", nextNode: "act3_theChoice" }] },
+                act3_theChoice: { text: "You are brought back up into the sunlight... The music is just as joyous, but now you hear it differently.\n\nNow you know.\n\n'You may stay,' the elder says. 'Or you may walk away.'", choices: [{ text: "I will stay in Omelas.", nextNode: "ending_stay" }, { text: "I will walk away from Omelas.", nextNode: "ending_walk" }] },
+                ending_stay: { text: "You take a deep breath... and rejoin the festival. You choose happiness... Your happiness, you realize, is now a part of the cage.", choices: [{ text: "The End.", action: "restart" }] },
+                ending_walk: {
+                    text: "You turn away from the festival... You walk straight out of the beautiful city of Omelas... You do not know where you are going. But you know you cannot stay.\n\nA new path opens before you. A new voice calls your name.",
+                    choices: [{ text: "See how deep the rabbit hole goes.", action: "goToMercy" }]
+                }
+            };
+
+            const actions = {
+                goToMercy: () => { window.location.href = './mercy-in-wonderland.html'; },
+                restart: () => { showNode('start'); }
+            };
+
+            function showNode(nodeKey) {
+                const node = gameData[nodeKey];
+                storyTextElement.innerHTML = '';
+                choicesElement.innerHTML = '';
+                node.text.split('\n').forEach((p, i) => { const el = document.createElement('p'); el.textContent = p.trim(); el.style.animationDelay = `${i * 0.3}s`; storyTextElement.appendChild(el); });
+                if (node.choices) {
+                    node.choices.forEach((choice, i) => {
+                        const btn = document.createElement('button');
+                        btn.classList.add('choice-btn');
+                        btn.textContent = choice.text;
+                        btn.style.animationDelay = `${(node.text.split('\n').length * 0.3) + (i * 0.2)}s`;
+                        btn.onclick = () => {
+                            if (choice.action) { actions[choice.action](); }
+                            else if (choice.nextNode) { showNode(choice.nextNode); }
+                        };
+                        choicesElement.appendChild(btn);
+                    });
+                }
+            }
+            showNode('start');
+        });
+    </script>
+</body>
+</html>

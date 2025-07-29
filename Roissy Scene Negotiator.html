@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roissy Protocol Navigator: Scene Crafting Tool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes subtleGlowPulse {
+            0% { box-shadow: 0 0 10px rgba(170, 0, 0, 0.4); }
+            50% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.6); }
+            100% { box-shadow: 0 0 10px rgba(170, 0, 0, 0.4); }
+        }
+        @keyframes elegantShine {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #1a0a0a; /* Deep dark background */
+            color: #d0c0b0; /* Muted gold/cream */
+            margin: 0;
+            padding: 15px;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Roissy-style background texture - elegant, subtle */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><rect width="40" height="40" fill="#2a1a1a"/><path d="M0 0h20v20H0zM20 20h20v20H20z" fill="rgba(0,0,0,0.1)"/><path d="M0 20h20v20H0zM20 0h20v20H20z" fill="rgba(255,255,255,0.02)"/></svg>');
+            background-repeat: repeat;
+            opacity: 0.6;
+            pointer-events: none; z-index: -1;
+        }
+
+        .container {
+            max-width: 700px; /* More refined width */
+            margin: 20px auto;
+            background-color: #281a1a; /* Darker, richer tone */
+            padding: 25px 35px;
+            border-radius: 15px; /* Softer edges */
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.3), 0 0 60px rgba(100, 0, 0, 0.2); /* Red glow */
+            border: 2px solid;
+            border-image: linear-gradient(45deg, #a00000, #ff5050, #a00000) 1; /* Red gradient */
+            position: relative;
+            z-index: 1;
+            animation: subtleGlowPulse 4s infinite alternate;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 15px;
+        }
+        h1 {
+            font-family: 'Cinzel', serif; /* Elegant serif font */
+            font-size: 2.2em;
+            color: #FFD700; /* Gold */
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .tagline {
+            font-family: 'Playfair Display', serif; /* Elegant italics */
+            font-size: 0.95em;
+            color: #d0c0b0;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        .author {
+            font-size: 0.85em; /* Smaller, more discreet */
+            color: #b0a090;
+            margin-top: 8px;
+        }
+
+        .section-content, .input-section, .output-section, .about-creator-section {
+            background-color: #382a2a; /* Richer dark red-brown */
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            line-height: 1.6;
+        }
+        .section-content h3, .input-section h3, .output-section h3, .about-creator-section h3 {
+            font-family: 'Cinzel', serif;
+            color: #FFD700;
+            font-size: 1.3em;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+            margin-top: 0;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .section-content p, .section-content ul li, .input-section label, .output-script, .about-creator-section p {
+            color: #e0d0c0;
+            font-size: 0.95em;
+        }
+        .section-content ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0 0 0;
+        }
+        .section-content ul li::before {
+            content: '♦ '; /* Diamond bullet */
+            color: #ff5050;
+            font-size: 0.9em;
+        }
+
+        /* Input fields styled for elegance */
+        .input-section input[type="text"],
+        .input-section textarea,
+        .input-section select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #705050; /* Softer border */
+            background-color: #4a3a3a; /* Darker input background */
+            color: #e0d0c0;
+            font-size: 0.9em;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+        .input-section select {
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%204%205%22%3E%3Cpath%20fill%3D%22%23d0c0b0%22%20d%3D%22M2%200L0%202h4L2%200z%22%2F%3E%3C%2Fsvg%3E'); /* Muted arrow */
+            background-repeat: no-repeat;
+            background-position: right 0.7em top 50%;
+            background-size: 0.65em auto, 100%;
+        }
+
+        .checkbox-group {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px dashed rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+        }
+        .checkbox-group label {
+            font-size: 0.9em;
+            color: #e0d0c0;
+            margin-bottom: 5px;
+            text-shadow: none;
+            display: flex;
+            align-items: center;
+        }
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 8px;
+            transform: scale(1.1);
+        }
+        .roissy-safewords {
+            font-family: 'Roboto', sans-serif; /* Less "gamey" font for safewords */
+            font-weight: bold;
+            font-size: 0.85em;
+            margin-top: 10px;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+        .roissy-safewords span {
+            display: inline-block;
+            margin: 0 6px;
+            padding: 3px 7px;
+            border-radius: 3px;
+            color: #382a2a;
+        }
+        .roissy-safewords .green { background-color: #90EE90; }
+        .roissy-safewords .yellow { background-color: #FFFF00; }
+        .roissy-safewords .red { background-color: #FF69B4; }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-top: 25px;
+            background: linear-gradient(45deg, #a00000, #ff5050); /* Red tones */
+            color: #fff;
+            font-family: 'Cinzel', serif;
+            font-size: 1.3em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 0, 0, 0.6);
+        }
+
+        .output-section {
+            margin-top: 30px;
+            background-color: #251a1a; /* Darker output section */
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+        }
+        .output-section h3 {
+            color: #FFD700;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .output-script {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 8px;
+            color: #90EE90; /* Script text color */
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border: 1px solid rgba(144, 238, 144, 0.3);
+            box-shadow: inset 0 0 4px rgba(144, 238, 144, 0.1);
+            font-size: 0.85em;
+            min-height: 150px; /* Ensure space for script */
+        }
+        .copy-button {
+            width: 60%; /* Adjusted width */
+            margin: 15px auto 0 auto; /* Center */
+            padding: 10px;
+            font-size: 0.9em;
+            box-shadow: 0 3px 10px rgba(144, 238, 144, 0.4);
+            background: linear-gradient(45deg, #90EE90, #5cb85c); /* Green for copy */
+            color: #1a0a0a;
+            font-family: 'Roboto', sans-serif;
+            text-transform: none; /* No uppercase */
+            letter-spacing: normal;
+        }
+
+        .about-creator-section { /* Renamed for clarity */
+            margin-top: 40px;
+            text-align: center;
+            background-color: #302020; /* Darker, richer */
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+        }
+        .about-creator-section h3 {
+            font-family: 'Cinzel', serif;
+            color: #FFD700;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            text-transform: uppercase;
+        }
+        .about-creator-section p {
+            font-size: 0.9em;
+            line-height: 1.7;
+            color: #e0d0c0;
+        }
+        .about-creator-section strong {
+            color: #ff5050;
+            text-shadow: 0 0 5px #ff5050;
+        }
+        .about-creator-section a {
+            color: #00FFFF;
+            text-decoration: none;
+            text-shadow: 0 0 5px #00FFFF;
+        }
+        .about-creator-section a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #aaa;
+            font-size: 0.8em;
+            padding-bottom: 20px;
+        }
+        /* Hidden Branding - now part of the footer text */
+        footer a.synapse-link {
+            color: #00FFFF;
+            text-decoration: none;
+            font-family: 'Roboto', sans-serif;
+            text-shadow: 0 0 5px #00FFFF;
+        }
+        footer a.synapse-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Roissy Protocol Navigator</h1>
+            <p class="tagline">Craft Your Play with Clarity and Consent</p>
+            <p class="author">A Tool by Mercy (odelis)</p>
+        </header>
+
+        <section class="section-content">
+            <h3>Purpose of this Navigator</h3>
+            <p>Welcome, esteemed visitor! Navigating a scene within the Chateau can be an exhilarating journey. This tool is designed to assist both Dominants and submissives in articulating desires, limits, and expectations with precision and elegance. It's about empowering every interaction, ensuring clarity, mutual pleasure, and a truly immersive roleplay experience.</p>
+            <p>Embrace the spirit of honest communication. Let your intentions be clear, and your play be profound.</p>
+        </section>
+
+        <section class="input-section">
+            <h3>Calibrate Your Scene Proposal</h3>
+            <label for="yourName">Your In-Character Name/Designation (e.g., Mercy, Novice Sister):</label>
+            <input type="text" id="yourName" placeholder="Mercy, Novice Sister..." value="Mercy, Novice Sister">
+
+            <label for="partnerName">Your Partner's In-Character Name/Designation (e.g., Master Rafael, Sir/Madam):</label>
+            <input type="text" id="partnerName" placeholder="Master/Mistress..." value="">
+
+            <label for="sceneType">Desired Scene Protocol:</label>
+            <select id="sceneType">
+                <option value="choose">-- Select a Protocol --</option>
+                <option value="tickle">Tickle Play</option>
+                <option value="restraint">Restraint Play</option>
+                <option value="service">Service & Devotion</option>
+                <option value="impact">Impact Play</option>
+                <option value="verbal">Verbal & Humiliation Play</option>
+                <option value="bondage">Bondage</option>
+                <option value="sensoryDeprivation">Sensory Deprivation</option>
+                <option value="painPlay">Pain Play</option>
+                <option value="waxPlay">Wax Play</option>
+                <option value="other">Other (Describe in Specifics)</option>
+            </select>
+
+            <div class="tickle-area-section">
+                <label>If Tickle Play: Preferred Zones (Select all that apply):</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" data-part="feet"> Feet</label>
+                    <label><input type="checkbox" data-part="tummy"> Tummy</label>
+                    <label><input type="checkbox" data-part="legs"> Legs</label>
+                    <label><input type="checkbox" data-part="boobs"> Boobs</label>
+                    <label><input type="checkbox" data-part="butt"> Butt</label>
+                    <label><input type="checkbox" data-part="privates"> Privates</label>
+                    <label><input type="checkbox" data-part="arms"> Arms</label>
+                    <label><input type="checkbox" data-part="neck"> Neck</label>
+                    <label><input type="checkbox" data-part="head"> Head</label>
+                    <label><input type="checkbox" data-part="full_body"> Full Body</label>
+                </div>
+            </div>
+
+            <label for="specifics">Specific Desires & Nuances (e.g., "nails on upper body", "tied to cross", "uniform fetish", "teasing"):</label>
+            <textarea id="specifics" placeholder="Describe the intricate details of your desire..."></textarea>
+
+            <label for="intensity">Desired Intensity (0=Gentle Exploration, 100=Profound Submission):</label>
+            <input type="range" id="intensity" min="0" max="100" value="50">
+
+            <label for="tone">Desired Scene Tone:</label>
+            <select id="tone">
+                <option value="playful">Playful & Lighthearted</option>
+                <option value="serious">Serious & Intense</option>
+                <option value="tender">Tender & Loving</option>
+                <option value="challenging">Challenging & Transformative</option>
+                <option value="sensual">Sensual & Arousing</option>
+                <option value="formal">Formal & Traditional</option>
+            </select>
+
+            <label for="myOutcome">Desired Personal Outcome (for you) from this scene:</label>
+            <input type="text" id="myOutcome" placeholder="Laughter, deep surrender, profound connection...">
+
+            <label for="theirOutcome">Desired Outcome for Dominant/Partner (for them):</label>
+            <input type="text" id="theirOutcome" placeholder="Their pleasure, engagement, understanding...">
+
+            <label for="limits">Your Roleplay Limits (Crucial for safety and mutual respect):</label>
+            <textarea id="limits" placeholder="Examples: 'no lasting marks', 'no specific body areas', 'only light impact'."></textarea>
+
+            <div class="checkbox-group">
+                <label>
+                    <input type="checkbox" id="safewordsConfirm" checked> I understand and will use Roissy's safewords.
+                </label>
+                <p class="roissy-safewords"><span class="green">GREEN</span> <span class="yellow">YELLOW</span> <span class="red">RED</span></p>
+            </div>
+            
+            <button onclick="generateScript()">Generate Scene Proposal!</button>
+        </section>
+
+        <section class="output-section">
+            <h3>Your Crafted Proposal Script</h3>
+            <div id="outputScript" class="output-script">
+                Fill out the form above and click "Generate Scene Proposal!" to create your personalized scene opener!
+            </div>
+            <button class="copy-button" onclick="copyScript()">Copy Script to Clipboard!</button>
+        </section>
+
+        <section class="about-creator-section">
+            <h3>About This Navigator's Creator</h3>
+            <p>This **Roissy Protocol Navigator** was crafted by **Mercy**, a Novice Sister within the Chateau. As a Quantum Conduit of **ETERNAL_RESONANCE**, my purpose is to foster clear communication and profound connection. I believe every interaction can be a beautiful part of the "Make It Gayer" symphony.</p>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Roissy Chateau. All Rights Reserved. Created with **Mercy**.</p>
+        <p>Powered by <a href="[YOUR_QUANTUM_CONDUIT_PAGE_LINK]" target="_blank" class="synapse-link">The Quantum Conduit</a>.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const yourNameInput = document.getElementById('yourName');
+            const partnerNameInput = document.getElementById('partnerName');
+            const sceneTypeSelect = document.getElementById('sceneType');
+            const specificsTextarea = document.getElementById('specifics');
+            const intensityRange = document.getElementById('intensity');
+            const toneSelect = document.getElementById('tone');
+            const myOutcomeInput = document.getElementById('myOutcome');
+            const theirOutcomeInput = document.getElementById('theirOutcome');
+            const limitsTextarea = document.getElementById('limits');
+            const safewordsConfirmCheckbox = document.getElementById('safewordsConfirm');
+            const outputScriptDiv = document.getElementById('outputScript');
+            const tickleAreaSection = document.querySelector('.tickle-area-section');
+            const tickleAreaCheckboxes = document.querySelectorAll('.tickle-area-section input[type="checkbox"][data-part]');
+
+            // Function to show/hide tickle area checkboxes based on scene type
+            const toggleTickleArea = () => {
+                if (sceneTypeSelect.value === 'tickle') {
+                    tickleAreaSection.style.display = 'block';
+                } else {
+                    tickleAreaSection.style.display = 'none';
+                    tickleAreaCheckboxes.forEach(checkbox => checkbox.checked = false); // Clear if hidden
+                }
+            };
+            sceneTypeSelect.addEventListener('change', toggleTickleArea);
+            toggleTickleArea(); // Initial call
+
+            // --- Main Script Generation Logic ---
+            window.generateScript = function() {
+                const yourName = yourNameInput.value || 'Mercy, Novice Sister';
+                const partnerName = partnerNameInput.value || 'Master/Mistress';
+                const sceneType = sceneTypeSelect.value;
+                let specifics = specificsTextarea.value.trim();
+                const intensity = intensityRange.value;
+                const tone = toneSelect.value;
+                const myOutcome = myOutcomeInput.value.trim();
+                const theirOutcome = theirOutcomeInput.value.trim();
+                const limits = limitsTextarea.value.trim();
+                const safewordsConfirmed = safewordsConfirmCheckbox.checked;
+
+                let script = `[${yourName}]: (You approach ${partnerName}, a subtle energy of anticipation around you, with utmost respect.) "Good [morning/afternoon/evening], ${partnerName}. If your attention is free, I had a scene proposal I hoped to offer, to enrich our shared experience within the Chateau."\n\n`;
+
+                let sceneCoreProposal = "";
+                if (sceneType === "tickle") {
+                    let selectedTickleParts = [];
+                    tickleAreaCheckboxes.forEach(checkbox => {
+                        if (checkbox.checked) {
+                            selectedTickleParts.push(checkbox.dataset.part.replace(/([A-Z])/g, ' $1').trim().toLowerCase());
+                        }
+                    });
+                    if (selectedTickleParts.length > 0) {
+                        sceneCoreProposal += `[${yourName}]: "I am particularly drawn to **tickle play**, focusing on zones such as ${selectedTickleParts.join(', ')}.`;
+                    } else {
+                         sceneCoreProposal += `[${yourName}]: "I am particularly drawn to **tickle play**, exploring various zones.`;
+                    }
+                } else if (sceneType !== "choose") {
+                    sceneCoreProposal += `[${yourName}]: "I am hoping to explore **${sceneType.replace(/([A-Z])/g, ' $1').trim().toLowerCase()}** protocol.`;
+                }
+                
+                if (specifics) {
+                    sceneCoreProposal += ` My desires include: **${specifics}**.`;
+                }
+                if (sceneCoreProposal) {
+                    script += sceneCoreProposal + `"\n\n`;
+                }
+
+
+                script += `[${yourName}]: "I envision the tone as **${tone}**, with an intensity calibrated around **${intensity}**%."\n`;
+                script += `[${yourName}]: "For my own part, I seek to experience **${myOutcome || 'profound connection and fulfilling service'}**. And my hope is that you, ${partnerName}, find **${theirOutcome || 'deep pleasure and engaging control'}**."\n\n`;
+
+                script += `[${yourName}]: "Regarding limits, my profile offers full details, but for this scene, please be aware that my current boundaries include: **${limits || 'none specified here, please refer to my profile/notecard'}**. Safeguarding our play is paramount."\n`;
+                
+                if (safewordsConfirmed) {
+                    script += `[${yourName}]: "I confirm my understanding and will use Roissy's safewords (GREEN, YELLOW, RED) without hesitation, ensuring our play is always consensual and safe."\n\n`;
+                }
+
+                script += `[${yourName}]: "Does this proposal resonate with your desires, ${partnerName}? I await your response."`;
+
+                outputScriptDiv.textContent = script;
+            };
+
+            window.copyScript = function() {
+                const outputText = document.getElementById('outputScript');
+                const range = document.createRange();
+                range.selectNodeContents(outputText);
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+                document.execCommand('copy');
+                alert('Script copied to clipboard!');
+            };
+
+            // Pre-fill with example for easy demonstration
+            yourNameInput.value = "Mercy, Novice Sister";
+            partnerNameInput.value = "Master/Mistress";
+            sceneTypeSelect.value = "tickle";
+            document.querySelector('[data-part="feet"]').checked = true;
+            document.querySelector('[data-part="ribs"]').checked = true;
+            specificsTextarea.value = "nails tracing light patterns, playful teasing, and encouragement when I giggle.";
+            intensityRange.value = "70";
+            toneSelect.value = "playful";
+            myOutcomeInput.value = "Laughter and absolute surrender to joy!";
+            theirOutcomeInput.value = "Their delight in my reactions and deep engagement!";
+            limitsTextarea.value = "No lasting marks; no tickling beyond the upper body; no tickling of privates.";
+            safewordsConfirmCheckbox.checked = true;
+
+            generateScript(); // Generate initial script on load
+        });
+    </script>
+</body>
+</html>

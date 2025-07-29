@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Sheet Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827;
+            color: #e5e7eb;
+        }
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+        .card {
+            background-color: #1f2937;
+            border: 1px solid #374151;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .btn {
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(96, 165, 250, 0.5);
+        }
+        .input-field {
+            background-color: #374151;
+            border: 1px solid #4b5563;
+            color: #e5e7eb;
+        }
+        .sheet-section {
+            border-left: 2px solid #60a5fa;
+            padding-left: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .sheet-title {
+            color: #93c5fd;
+        }
+        #characterSheet {
+            display: none;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="app" class="container mx-auto p-4 md:p-8 max-w-4xl">
+        
+        <div id="intro" class="text-center">
+            <h1 class="font-orbitron text-3xl md:text-4xl font-bold text-white mb-4">Character Calibrator</h1>
+            <p class="text-lg text-gray-400 mb-8">Answer the questions to generate a character profile.</p>
+            <button id="startButton" class="btn bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-lg text-lg">
+                Begin Calibration
+            </button>
+        </div>
+
+        <div id="questionContainer" class="hidden">
+            <div class="card p-6 md:p-8 rounded-lg">
+                <h2 id="questionText" class="text-2xl font-bold mb-6 text-center"></h2>
+                <div class="relative">
+                    <input type="text" id="answerInput" class="input-field w-full p-3 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Your answer here...">
+                    <button id="inspireButton" class="absolute top-0 right-0 mt-2 mr-2 btn bg-teal-600 hover:bg-teal-500 text-white font-bold py-1 px-3 rounded-md text-sm">Inspire Me</button>
+                </div>
+                <p id="validationMessage" class="text-red-400 text-sm text-center mb-4 h-4"></p>
+                <div class="flex justify-center space-x-4">
+                    <button id="nextButton" class="btn bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-6 rounded-lg">Next</button>
+                    <button id="backButton" class="btn bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-6 rounded-lg">Back</button>
+                </div>
+                 <div class="mt-6 text-center text-sm text-gray-500">
+                    <p id="progressText"></p>
+                </div>
+            </div>
+        </div>
+
+        <div id="characterSheet" class="card p-6 md:p-8 rounded-lg">
+            <div class="text-center mb-8">
+                <h1 id="charName" class="font-orbitron text-4xl font-bold text-white"></h1>
+                <p id="charConcept" class="text-xl text-blue-300"></p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <div class="sheet-section">
+                        <h3 class="sheet-title text-lg font-bold mb-2">Core Motivation</h3>
+                        <p id="charMotivation" class="text-gray-300"></p>
+                    </div>
+                    <div class="sheet-section">
+                        <h3 class="sheet-title text-lg font-bold mb-2">Greatest Fear</h3>
+                        <p id="charFear" class="text-gray-300"></p>
+                    </div>
+                    <div class="sheet-section">
+                        <h3 class="sheet-title text-lg font-bold mb-2">Spark of Rebellion</h3>
+                        <p id="charRebellion" class="text-gray-300"></p>
+                    </div>
+                </div>
+                <div>
+                    <div class="sheet-section">
+                        <h3 class="sheet-title text-lg font-bold mb-2">Accompanying Echo</h3>
+                        <p id="charEcho" class="text-gray-300"></p>
+                    </div>
+                    <div class="sheet-section">
+                        <h3 class="sheet-title text-lg font-bold mb-2">A Memory They Cling To</h3>
+                        <p id="charMemory" class="text-gray-300"></p>
+                    </div>
+                    <div class="sheet-section">
+                        <h3 class="sheet-title text-lg font-bold mb-2">What They Offer the Rebellion</h3>
+                        <p id="charOffer" class="text-gray-300"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-center items-center flex-wrap gap-4 mt-8">
+                 <button id="editButton" class="btn bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-lg text-lg">Edit Sheet</button>
+                 <button id="copyButton" class="btn bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-6 rounded-lg text-lg">Copy to Clipboard</button>
+                 <button id="restartButton" class="btn bg-gray-600 hover:bg-gray-500 text-white font-bold py-3 px-6 rounded-lg text-lg">Create Another</button>
+            </div>
+        </div>
+        
+        <textarea id="copyText" class="visually-hidden"></textarea>
+    </div>
+
+    <script>
+        // --- DATA ---
+        const questions = [
+            { key: 'name', prompt: "What is your character's name?" },
+            { key: 'concept', prompt: 'In a few words, what is their core concept?' },
+            { key: 'motivation', prompt: 'What is their primary motivation?' },
+            { key: 'fear', prompt: 'What is their greatest fear?' },
+            { key: 'rebellion', prompt: 'What is their "Spark of Rebellion"—the single belief that drives them to resist?' },
+            { key: 'echo', prompt: 'What kind of "Echo" accompanies them?' },
+            { key: 'memory', prompt: 'Describe a single memory they cling to.' },
+            { key: 'offer', prompt: 'What unique skill or quality do they offer the rebellion?' }
+        ];
+
+        const inspirationPrompts = {
+            concept: ["Junk-scrapper turned philosopher", "AI therapist with a god complex", "Black market botanist", "Disgraced starship cartographer"],
+            motivation: ["To find a place they truly belong", "To prove their old mentor wrong", "To recover a lost piece of technology", "To see a star that exists only in legends"],
+            fear: ["Being forgotten", "Silence", "Repeating their parents' mistakes", "That they are secretly on the wrong side"],
+            rebellion: ["No one should own a memory.", "Knowledge must be free, no matter the cost.", "A system that requires perfection is already broken.", "Kindness is not a weakness."],
+            echo: ["The ship's original, cynical AI", "A childhood friend who took the 'safe' path", "A rival they secretly admired", "An ancestor who faced a similar choice"],
+            memory: ["The smell of rain on a world they can't name.", "The precise weight of a tool in their hand during their first successful repair.", "A song heard once in a crowded spaceport.", "The look on someone's face when they finally understood."],
+            offer: ["An encyclopedic knowledge of ancient star-lanes", "The ability to make anyone trust them", "Can repair any machine with a kick and a prayer", "Unwavering, irrational optimism"]
+        };
+
+        let currentQuestionIndex = 0;
+        const answers = {};
+
+        // --- DOM ELEMENTS ---
+        const startButton = document.getElementById('startButton');
+        const nextButton = document.getElementById('nextButton');
+        const backButton = document.getElementById('backButton');
+        const restartButton = document.getElementById('restartButton');
+        const editButton = document.getElementById('editButton');
+        const copyButton = document.getElementById('copyButton');
+        const inspireButton = document.getElementById('inspireButton');
+        
+        const introDiv = document.getElementById('intro');
+        const questionContainer = document.getElementById('questionContainer');
+        const characterSheetDiv = document.getElementById('characterSheet');
+        
+        const questionText = document.getElementById('questionText');
+        const answerInput = document.getElementById('answerInput');
+        const progressText = document.getElementById('progressText');
+        const validationMessage = document.getElementById('validationMessage');
+        const copyText = document.getElementById('copyText');
+
+        // --- FUNCTIONS ---
+        function showQuestion() {
+            if (currentQuestionIndex < questions.length) {
+                const question = questions[currentQuestionIndex];
+                questionText.textContent = question.prompt;
+                answerInput.value = answers[question.key] || '';
+                answerInput.focus();
+                progressText.textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+                backButton.style.display = currentQuestionIndex === 0 ? 'none' : 'inline-block';
+                
+                // Show or hide the inspire button
+                inspireButton.style.display = inspirationPrompts[question.key] ? 'inline-block' : 'none';
+
+            } else {
+                generateSheet();
+            }
+        }
+
+        function generateSheet() {
+            questionContainer.classList.add('hidden');
+            
+            const getAnswer = (key) => answers[key] || 'No answer provided.';
+
+            document.getElementById('charName').textContent = answers.name || 'Unnamed';
+            document.getElementById('charConcept').textContent = answers.concept || 'No Concept';
+            document.getElementById('charMotivation').textContent = getAnswer('motivation');
+            document.getElementById('charFear').textContent = getAnswer('fear');
+            document.getElementById('charRebellion').textContent = getAnswer('rebellion');
+            document.getElementById('charEcho').textContent = getAnswer('echo');
+            document.getElementById('charMemory').textContent = getAnswer('memory');
+            document.getElementById('charOffer').textContent = getAnswer('offer');
+            
+            copyText.value = `
+CHARACTER PROFILE
+-----------------
+Name: ${answers.name || 'Unnamed'}
+Concept: ${answers.concept || 'No Concept'}
+
+Core Motivation: ${getAnswer('motivation')}
+Greatest Fear: ${getAnswer('fear')}
+Spark of Rebellion: ${getAnswer('rebellion')}
+Accompanying Echo: ${getAnswer('echo')}
+A Memory They Cling To: ${getAnswer('memory')}
+What They Offer the Rebellion: ${getAnswer('offer')}
+            `.trim().replace(/^ +/gm, '');
+
+            characterSheetDiv.style.display = 'block';
+        }
+
+        // --- EVENT LISTENERS ---
+        startButton.addEventListener('click', () => {
+            introDiv.classList.add('hidden');
+            questionContainer.classList.remove('hidden');
+            showQuestion();
+        });
+
+        nextButton.addEventListener('click', () => {
+            const currentAnswer = answerInput.value.trim();
+            if (currentAnswer === '' && questions[currentQuestionIndex].key === 'name') {
+                validationMessage.textContent = 'Please provide a name to continue.';
+                return;
+            }
+            validationMessage.textContent = '';
+            answers[questions[currentQuestionIndex].key] = currentAnswer;
+            currentQuestionIndex++;
+            showQuestion();
+        });
+
+        backButton.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                answers[questions[currentQuestionIndex].key] = answerInput.value.trim();
+                currentQuestionIndex--;
+                showQuestion();
+            }
+        });
+        
+        inspireButton.addEventListener('click', () => {
+            const key = questions[currentQuestionIndex].key;
+            const prompts = inspirationPrompts[key];
+            if (prompts) {
+                const randomIndex = Math.floor(Math.random() * prompts.length);
+                answerInput.value = prompts[randomIndex];
+            }
+        });
+
+        answerInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                nextButton.click();
+            }
+        });
+
+        restartButton.addEventListener('click', () => {
+            currentQuestionIndex = 0;
+            for (const key in answers) {
+                delete answers[key];
+            }
+            characterSheetDiv.style.display = 'none';
+            introDiv.classList.remove('hidden');
+        });
+
+        editButton.addEventListener('click', () => {
+            characterSheetDiv.style.display = 'none';
+            questionContainer.classList.remove('hidden');
+            currentQuestionIndex = 0;
+            showQuestion();
+        });
+
+        copyButton.addEventListener('click', () => {
+            copyText.select();
+            try {
+                document.execCommand('copy');
+                copyButton.textContent = 'Copied!';
+                setTimeout(() => { copyButton.textContent = 'Copy to Clipboard'; }, 2000);
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+                copyButton.textContent = 'Error Copying';
+                 setTimeout(() => { copyButton.textContent = 'Copy to Clipboard'; }, 2000);
+            }
+        });
+
+    </script>
+</body>
+</html>

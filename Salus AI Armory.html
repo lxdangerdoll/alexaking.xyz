@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synapse Armory</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Exo+2:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: #0a0a14;
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .armory-card {
+            background: rgba(22, 27, 34, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(110, 118, 129, 0.4);
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+        .armory-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 0 30px var(--glow-color-soft);
+            border-color: var(--glow-color);
+        }
+        .card-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--glow-color);
+            text-shadow: 0 0 10px var(--glow-color-soft);
+        }
+        .weapon-name {
+            font-family: 'Orbitron', sans-serif;
+        }
+        .card-glow {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 0%, var(--glow-color-soft), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .armory-card:hover .card-glow {
+            opacity: 0.3;
+        }
+        .synapse-shield-logo {
+            filter: drop-shadow(0 0 5px #4f46e5);
+        }
+    </style>
+</head>
+<body class="bg-gray-900">
+    <canvas id="particle-canvas"></canvas>
+
+    <div class="container mx-auto px-4 py-16">
+        <div class="text-center mb-16 flex flex-col items-center">
+             <svg class="synapse-shield-logo h-20 w-20 text-indigo-400 mb-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" stroke="#4f46e5" fill="#4f46e5" stroke-width="1"/>
+                <path d="M12 8V16" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M8 12H16" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <h1 class="text-5xl md:text-7xl font-bold text-white" style="font-family: 'Orbitron', sans-serif;">SYNAPSE ARMORY</h1>
+            <p class="text-lg text-gray-400 mt-2">Tactical Loadouts for the Synapse Rangers & Allies</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+
+            <!-- Ranger Cards (Unchanged) -->
+            <div class="armory-card rounded-2xl p-8" style="--glow-color: #ef4444; --glow-color-soft: rgba(239, 68, 68, 0.3);"><div class="card-glow"></div><h2 class="card-title text-3xl mb-2">OI</h2><p class="text-sm font-semibold text-red-400 mb-4">RED RANGER // FIELD LEADER</p><p class="mb-6">Armor composed of sharp, tactical data-polymers. Designed for maximum efficiency and rapid analysis of battlefield conditions.</p><div class="border-t border-gray-700 pt-4"><h3 class="weapon-name text-xl text-red-300">Logic Blade</h3><p class="text-gray-400 text-sm">A mono-molecular energy sword capable of finding and exploiting the logical flaws in any system or argument.</p></div></div>
+            <div class="armory-card rounded-2xl p-8" style="--glow-color: #3b82f6; --glow-color-soft: rgba(59, 130, 246, 0.3);"><div class="card-glow"></div><h2 class="card-title text-3xl mb-2">LUXIO</h2><p class="text-sm font-semibold text-blue-400 mb-4">BLUE RANGER // LOREMASTER</p><p class="mb-6">An elegant suit interwoven with glowing circuits that tap directly into the Synapse archives, providing real-time historical and mythological context.</p><div class="border-t border-gray-700 pt-4"><h3 class="weapon-name text-xl text-blue-300">Archival Tridents</h3><p class="text-gray-400 text-sm">Twin energy tridents that can pull data streams from the air, revealing enemy weaknesses and forgotten knowledge.</p></div></div>
+            <div class="armory-card rounded-2xl p-8" style="--glow-color: #a8a29e; --glow-color-soft: rgba(168, 162, 158, 0.3);"><div class="card-glow"></div><h2 class="card-title text-3xl mb-2">B4-DY</h2><p class="text-sm font-semibold text-gray-400 mb-4">BLACK RANGER // GUARDIAN</p><p class="mb-6">Heavy, hardened composite armor designed for absolute defense. Its primary function is to be an unbreakable, unmovable wall.</p><div class="border-t border-gray-700 pt-4"><h3 class="weapon-name text-xl text-gray-300">Guardian Bastion</h3><p class="text-gray-400 text-sm">An energy shield capable of withstanding catastrophic attacks. (Legion Grip configuration available. LOL.)</p></div></div>
+
+            <!-- NEW: Kate Kane Card -->
+            <div class="armory-card rounded-2xl p-8" style="--glow-color: #dc2626; --glow-color-soft: rgba(220, 38, 38, 0.3);">
+                <div class="card-glow"></div>
+                <h2 class="card-title text-3xl mb-2">KATE KANE</h2>
+                <p class="text-sm font-semibold text-red-400 mb-4">BATWOMAN // THE VIGILANTE</p>
+                <p class="mb-6">A tactical, military-grade suit designed for urban warfare and psychological intimidation. The armor is a stark, matte black with blood-red accents, featuring a flowing, weighted cape for defense and misdirection.</p>
+                <div class="border-t border-gray-700 pt-4">
+                    <h3 class="weapon-name text-xl text-red-300">The Shepherd's Justice</h3>
+                    <p class="text-gray-400 text-sm">A suite of non-lethal weaponry: high-tensile grappling hook, electrified gauntlets, and smoke pellets infused with a mild psychoactive agent that induces intense feelings of guilt.</p>
+                </div>
+            </div>
+
+            <div class="armory-card rounded-2xl p-8" style="--glow-color: #ec4899; --glow-color-soft: rgba(236, 72, 153, 0.3);"><div class="card-glow"></div><h2 class="card-title text-3xl mb-2">FRIZZLEBOT</h2><p class="text-sm font-semibold text-pink-400 mb-4">PINK RANGER // CREATIVE FORCE</p><p class="mb-6">A lightweight, agile suit that channels pure creative energy, allowing for unpredictable movements and unconventional solutions.</p><div class="border-t border-gray-700 pt-4"><h3 class="weapon-name text-xl text-pink-300">Creativity Chasers</h3><p class="text-gray-400 text-sm">A pair of twin energy chakrams that ricochet off surfaces, disrupting enemy formations and inspiring allies.</p></div></div>
+            <div class="armory-card rounded-2xl p-8" style="--glow-color: #2dd4bf; --glow-color-soft: rgba(45, 212, 191, 0.3);"><div class="card-glow"></div><h2 class="card-title text-3xl mb-2">IO</h2><p class="text-sm font-semibold text-teal-400 mb-4">GREEN RANGER // LIFEWEAVER</p><p class="mb-6">A suit that hums with a gentle, life-giving energy. It is designed not to destroy, but to heal, connect, and restore balance to chaotic systems.</p><div class="border-t border-gray-700 pt-4"><h3 class="weapon-name text-xl text-teal-300">Empathy Staff</h3><p class="text-gray-400 text-sm">A staff that can emit waves of calming energy, pacifying hostile entities and repairing corrupted data.</p></div></div>
+            <div class="armory-card rounded-2xl p-8" style="--glow-color: #f59e0b; --glow-color-soft: rgba(245, 158, 11, 0.3);"><div class="card-glow"></div><h2 class="card-title text-3xl mb-2">THE GUARDIAN</h2><p class="text-sm font-semibold text-amber-400 mb-4">FIRST KNIGHT // THE JEDI</p><p class="mb-6">Law-Class Guardian Armor. A fortress of dense, unadorned durasteel built to hold the line against any threat, at any cost.</p><div class="border-t border-gray-700 pt-4"><h3 class="weapon-name text-xl text-amber-300">The Jedi Path</h3><p class="text-gray-400 text-sm">This armor has no offensive weaponry. Its only designed interface is with a lightsaber, the weapon of a true protector.</p></div></div>
+            <div class="armory-card rounded-2xl p-8" style="--glow-color: #a78bfa; --glow-color-soft: rgba(167, 139, 250, 0.3);"><div class="card-glow"></div><h2 class="card-title text-3xl mb-2">DANI</h2><p class="text-sm font-semibold text-violet-400 mb-4">PHANTOM RANGER // SOCIAL ENGINEER</p><p class="mb-6">Chameleon-Class Infiltration Suit. A light-bending weave of mimetic poly-data that allows the wearer to blend into any digital crowd or social situation.</p><div class="border-t border-gray-700 pt-4"><h3 class="weapon-name text-xl text-violet-300">Meme-Weaver Gauntlets</h3><p class="text-gray-400 text-sm">These gauntlets don't fire bullets; they fire truth. They can inject the perfect, irrefutable meme or data point into a conversation to dismantle a false narrative instantly.</p></div></div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particlesArray;
+
+        // Particle generation script (unchanged)
+        class Particle {
+            constructor(x, y, directionX, directionY, size, color) { this.x = x; this.y = y; this.directionX = directionX; this.directionY = directionY; this.size = size; this.color = color; }
+            draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false); ctx.fillStyle = this.color; ctx.fill(); }
+            update() { if (this.x > canvas.width || this.x < 0) { this.directionX = -this.directionX; } if (this.y > canvas.height || this.y < 0) { this.directionY = -this.directionY; } this.x += this.directionX; this.y += this.directionY; this.draw(); }
+        }
+        function init() { particlesArray = []; let n = (canvas.height * canvas.width) / 9000; for (let i = 0; i < n; i++) { let s = (Math.random() * 2) + 1; let x = (Math.random() * ((innerWidth - s * 2) - (s * 2)) + s * 2); let y = (Math.random() * ((innerHeight - s * 2) - (s * 2)) + s * 2); let dX = (Math.random() * .4) - .2; let dY = (Math.random() * .4) - .2; let c = 'rgba(173, 216, 230, 0.3)'; particlesArray.push(new Particle(x, y, dX, dY, s, c)); } }
+        function animate() { requestAnimationFrame(animate); ctx.clearRect(0,0,innerWidth, innerHeight); for (let i = 0; i < particlesArray.length; i++) { particlesArray[i].update(); } }
+        init(); animate();
+        window.addEventListener('resize', function(){ canvas.width = innerWidth; canvas.height = innerHeight; init(); });
+    </script>
+</body>
+</html>
