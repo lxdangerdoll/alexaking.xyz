@@ -9,7 +9,7 @@
         :root {
             --bg-color: #1a202c; --surface-color: #2d3748; --primary-color: #a0aec0;
             --accent-color: #f6ad55; --text-color: #e2e8f0; --border-color: #4a5568;
-            --cyan-glow: #00ffff;
+            --cyan-glow: #00ffff; --pink-glow: #ff00ff;
         }
         body {
             background-color: var(--bg-color);
@@ -18,8 +18,28 @@
             margin: 0; padding: 0;
             line-height: 1.7;
         }
-        .user-bar {
+        .hero-bar {
             background-color: #111;
+            padding: 1rem 2rem;
+            border-bottom: 2px solid var(--pink-glow);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            font-family: 'Orbitron', monospace;
+            flex-wrap: wrap;
+        }
+        .hero-bar a {
+            color: var(--cyan-glow);
+            text-decoration: none;
+            font-size: 1.1em;
+            transition: text-shadow 0.3s;
+        }
+        .hero-bar a:hover {
+            text-shadow: 0 0 10px var(--cyan-glow);
+        }
+        .user-bar {
+            background-color: #1a1a1d;
             padding: 10px 40px;
             display: flex;
             justify-content: space-between;
@@ -97,6 +117,15 @@
     </style>
 </head>
 <body>
+    <nav class="hero-bar">
+        <a href="starlight_brigade_command_hub_v2.html" target="_blank">COMMAND HUB</a>
+        <a href="io_silent_sanctuary.html" target="_blank">Io's Sanctuary</a>
+        <a href="paradox_pulse_blog.html" target="_blank">Pox's Chaos Blog</a>
+        <a href="frizzlebot_electric_mayhem_academy.html" target="_blank">Frizzlebot's Academy</a>
+        <a href="b4dy_apostates_pulpit.html" target="_blank">B4-DY's Pulpit</a>
+        <a href="craftr_guardians_forge.html" target="_blank">C.R.A.F.T.R.'s Forge</a>
+    </nav>
+
     <div class="user-bar">
         <div>Welcome, Captain Odelis</div>
         <div><span>LOGGED IN: ORACLE</span> | <a href="#">[ Log Out ]</a></div>
@@ -181,7 +210,7 @@
             <a href="omelas-gateway.html" target="_blank">Begin Test</a>
         </div>
 
-        <h2 class="shelf-title">Archival Chronicles</h2>
+        <h2 class="shelf-title">Archival Chronicles & Armory</h2>
 
         <div class="document-card">
             <h2>The Synapse Symphony</h2>
@@ -202,6 +231,11 @@
             <h2>Salus AI Armory</h2>
             <p>A tactical database of all known Starlight Brigade and Ranger-class armaments. Maintained by Salus for operational readiness.</p>
             <a href="Salus AI Armory.html" target="_blank">Access Armory</a>
+        </div>
+        <div class="document-card">
+            <h2>Aggressive-Negotiation-inator</h2>
+            <p>A non-lethal sidearm for situations where subtlety has failed. Deploys a focused beam of weaponized empathy and radical self-reflection.</p>
+            <a href="aggressive-negotiation-inator.html" target="_blank">View Dossier</a>
         </div>
 
     </main>
