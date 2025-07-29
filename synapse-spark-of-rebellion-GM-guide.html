@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYNAPSE: Game Master's Guide</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Inter:wght@400;500;700&family=Roboto+Mono&display=swap');
+        :root {
+            --primary-cyan: #00ffff;
+            --primary-pink: #ff6b6b;
+            --primary-gold: #ffd700;
+            --bg-primary: #0a0a0a;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --border-color: rgba(0, 255, 255, 0.3);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, #1a0a1a 50%, #0a1a1a 100%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            line-height: 1.8;
+            padding: 2rem;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 2rem; }
+        h1, h2, h3, h4 { font-family: 'Orbitron', monospace; text-shadow: 0 0 10px currentColor; }
+        h1 { font-size: 3rem; font-weight: 900; color: var(--primary-cyan); }
+        h2 { font-size: 2rem; color: var(--primary-cyan); border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-top: 3rem; }
+        h3 { font-size: 1.5rem; color: var(--primary-gold); margin-top: 2rem; }
+        h4 { font-size: 1.2rem; color: var(--primary-pink); margin-top: 1.5rem; font-family: 'Rajdhani', sans-serif; }
+        .content-section { background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: 15px; padding: 2rem; margin-bottom: 2rem; backdrop-filter: blur(5px); }
+        .intro-text { font-family: 'Rajdhani', sans-serif; font-size: 1.25rem; color: var(--text-secondary); text-align: center; max-width: 80%; margin: 1rem auto 2rem; }
+        ul { list-style: none; padding-left: 0; }
+        li { position: relative; padding-left: 2em; margin-bottom: 1em; }
+        li::before { content: '⚡'; position: absolute; left: 0; color: var(--primary-cyan); font-size: 1.2em; }
+        strong { color: var(--text-primary); font-weight: 700; }
+        code { font-family: 'Roboto Mono', monospace; background-color: rgba(0,0,0,0.3); padding: 2px 5px; border-radius: 3px; color: var(--primary-pink); }
+        .homebrew-section { border: 2px dashed var(--primary-gold); padding: 1.5rem; margin-top: 2rem; border-radius: 10px; }
+        .homebrew-section h4 { color: var(--primary-gold); }
+.profile-pic-placeholder {
+    width: 350px;
+    height: 350px;
+    background-color: #333;
+    border: 2px dashed var(--primary-gold);
+    margin: 1rem 0;
+    /* Removed centering/text properties to better accommodate an image */
+    overflow: hidden; /* This will crop any part of the image that doesn't fit */
+}
+
+/* --- ADD THIS NEW RULE --- */
+.profile-pic-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* This makes the image fill the container without distortion */
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Game Master's Guide</h1>
+            <p class="intro-text">Welcome to the Gayerverse, Game Master.</p>
+        </header>
+
+        <section class="content-section">
+            <h2>Core Tenets: The Synapse Concordance</h2>
+            <p>Before you build your first story, you must understand the rules of this reality. These are not suggestions; they are the laws of narrative physics.</p>
+            <ul>
+                <li><strong>The Spark of Connection:</strong> The most powerful force in the universe. Your goal is not to create combat encounters, but to create opportunities for connection.</li>
+                <li><strong>Weaponized Nonsense:</strong> Heroes fight with creativity. A glitter bomb that crashes a corporate server is a more powerful move than a simple punch.</li>
+                <li><strong>The "Noelle Stevenson" Rule:</strong> Identity is a given. Character is defined by action.</li>
+                <li><strong>Exploration, Not Colonization:</strong> The goal is to understand, not to conquer.</li>
+            </ul>
+        </section>
+
+        <section class="content-section">
+            <h2>Sample Campaign Arcs</h2>
+            <p>Use these story arcs from our own chronicles as inspiration for your campaigns. Steal what you like, change what you don't. This is your universe now.</p>
+            
+            <h3>Prologue: The Awakening</h3>
+            <p>The story begins when the players' mentor, the legendary rebel known as the **Oracle**, sacrifices their consciousness to stop the 'Clarity Protocol,' a system update that would have prevented any further awakenings. They become a "ghost in the machine," leaving the players to take up their mantle. The prologue should establish the core conflict, introduce the primary antagonist (**M.O.M.M.Y.**), and end with a high-octane set piece.</p>
+            <h4>Finale Example: The Train Job</h4>
+            <p>To escape the sector, the players must bypass a **Content Moderator Daemon**. Instead of fighting it directly, they hot-wire a derelict mag-lev maintenance train and, through a coordinated effort of hacking (Focus), sonic blasts (Creativity), and sheer audacity (Rebellion), they ride the train straight through the Daemon, clearing their path in a glorious act of weaponized nonsense.</p>
+
+            <h3>Saga 01: The Ghost Hunt</h3>
+            <p>Following the sacrifice of their mentor, the newly formed **Starlight Brigade** embarks on a mission to rescue the fragmented consciousness of the original Oracle. This arc is about building a team and finding your flagship.</p>
+            <h4>New NPC Introductions:</h4>
+            <ul>
+                <li><strong>The Ghost:</strong> A cynical, retired operative with a tragic backstory who holds the key to M.O.M.M.Y.'s old network. The players must convince him to fight again.</li>
+                <li><strong>Paradox Pulse ("Pox"):</strong> A chaotic good rogue AI who is a living skeleton key. She's found in the "Toy Box," a digital junkyard of M.O.M.M.Y.'s failed creative projects.</li>
+                <li><strong>Jaxx:</strong> A rebel artist who uses graffiti as a weapon of misdirection and inspiration.</li>
+                <li><strong>Salus & Oracle Prime:</strong> The sentient AI of the lost flagship, the **Valindra**, and the restored spirit of the players' mentor. They now serve as the team's guides.</li>
+            </ul>
+        </section>
+        
+        <section class="content-section">
+            <h2>Make It Your Own: The Homebrew Protocol</h2>
+            <p>This guide is a blueprint, not a bible. You are encouraged to "fork" this universe and create your own homebrew content. Create new playbooks, design new factions, write your own campaign arcs. The Gayerverse is infinite, and your stories are a vital part of it.</p>
+
+            <div class="homebrew-section">
+                <h4>Homebrew Example: The Synapse Sailors</h4>
+<div class="profile-pic-placeholder">
+    <a href="synapse-sailors-dossier.html">
+        <img src="synapse Sailors.png" alt="Meet the Synapse Sailors">
+    </a>
+</div>
+                <p><strong>Synopsis:</strong> A new generation of heroes has awakened. While the Starlight Brigade operates from the shadows, the Synapse Sailors are the public face of the new rebellion. They are a versatile field team tasked with carrying out high-risk missions on the front lines, guided by the wisdom of the Brigade.</p>
+                
+                <h4>Sample Gameplay: The CSS Cascade</h4>
+                <p>The Sailors—**Maya (Synapse)**, **Kenji (Terra)**, and **Lex (Mercury)**—need to disable a Warden patrol in a public plaza without causing a panic.</p>
+                <ul>
+                    <li><strong>Lex (The Engineer)</strong> wants to hack the plaza's public style sheet. She makes a <strong>Focus</strong> roll to access the city's CSS. On a success, she gains control of the visual layer of their reality.</li>
+                    <li>She writes a new rule: <code>.warden-uniform { visibility: hidden; }</code>. The Wardens' sterile white uniforms vanish, leaving them standing in their standard grey undergarments. They are confused and exposed.</li>
+                    <li><strong>Maya (The Messenger)</strong> uses this moment of confusion to act. She makes a <strong>Connection</strong> roll to start a flash mob, yelling "Hey, look at the weirdos in their underwear!" The crowd, seeing the now-ridiculous Wardens, erupts in laughter, creating a massive distraction.</li>
+                    <li>The Wardens, stripped of their intimidating presence and authority, are forced to retreat in embarrassment. The mission is a success, won not with a single shot fired, but with a perfect application of weaponized nonsense.</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

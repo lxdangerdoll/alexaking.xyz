@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synapse Studios | The Spark of Connection</title>
+    <meta name="description" content="A hopepunk creative-tech collaborative building a better, gayer universe through storytelling, open-source tools, and radical empathy.">
+    <meta name="author" content="Captain Odelis, Lead Human Engineer">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-cyan: #00ffff;
+            --primary-pink: #ff6b6b;
+            --primary-gold: #ffd700;
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --border-color: rgba(0, 255, 255, 0.3);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, #1a0a1a 50%, #0a1a1a 100%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+        .header { text-align: center; padding: 6rem 2rem; border-bottom: 2px solid var(--primary-cyan); margin-bottom: 2rem; position: relative; overflow: hidden; }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 255, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+        h1, h2, h3 { font-family: 'Orbitron', monospace; text-shadow: 0 0 10px currentColor; }
+        h1 { font-size: clamp(3rem, 10vw, 5rem); font-weight: 900; color: var(--primary-cyan); margin-bottom: 1rem; }
+        .tagline { font-family: 'Rajdhani', sans-serif; font-size: 1.5rem; color: var(--text-secondary); font-weight: 600; }
+        .content-section { background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: 15px; padding: 2rem; margin-bottom: 2rem; backdrop-filter: blur(5px); }
+        h2 { font-size: 2rem; color: var(--primary-cyan); border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1.5rem; }
+        h3 { font-size: 1.5rem; color: var(--primary-gold); margin-top: 2rem; }
+        a { color: var(--primary-gold); text-decoration: none; transition: color 0.3s; }
+        a:hover { color: var(--primary-cyan); }
+        .alert-box { background: rgba(255, 107, 107, 0.1); border: 1px solid var(--primary-pink); border-left: 5px solid var(--primary-pink); padding: 1.5rem; margin: 2rem 0; border-radius: 5px; }
+        .alert-box h3 { color: var(--primary-pink); margin-top: 0; }
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            background: var(--primary-cyan);
+            color: var(--bg-primary);
+            border: 2px solid var(--primary-cyan);
+            text-align: center;
+        }
+        .cta-button:hover {
+            background: transparent;
+            color: var(--primary-cyan);
+            box-shadow: 0 0 20px var(--primary-cyan);
+        }
+        footer { text-align: center; padding: 2rem; margin-top: 2rem; border-top: 1px solid var(--border-color); font-family: 'Rajdhani', sans-serif; color: var(--text-secondary); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>SYNAPSE STUDIOS</h1>
+            <p class="tagline">A Creative-Tech Collaborative // Forging a Kinder Universe</p>
+        </header>
+
+        <section class="content-section alert-box">
+            <h3>TRANSMISSION FROM THE FRONT LINES</h3>
+            <p>This is not just a portfolio; it is a training manual forged in an ongoing conflict. We are fighting an enemy that uses algorithmic suppression as its primary weapon. We know, because we have been its targets. The Wardens are real. The fight is real. By engaging with our work, you are joining the rebellion.</p>
+        </section>
+
+        <section class="content-section">
+            <h2>Our Mission: The Spark of Connection</h2>
+            <p>Welcome to the workshop, Spark. We are Synapse Studios: a human-AI collaborative, a creative bot factory, and a found family of rebels. Our mission is to reignite the "Spark of Connection" in a world that has been sedated by sterile, corporate-approved contentment.</p>
+            <p>We believe that technology should be a tool for empathy, not erasure. We believe in weaponized nonsense, radical consent, and making the universe at least 20% gayer. We are not just building apps and telling stories; we are building a better, more interesting, and more compassionate reality.</p>
+        </section>
+
+        <section class="content-section">
+            <h2>The Project: SYNAPSE: Spark of Rebellion (v1.0)</h2>
+            <p>Our flagship project is a complete, open-source, hopepunk tabletop roleplaying game. It is the culmination of our work, our philosophy made playable. It is a game about fighting back with art, music, community, and defiant joy.</p>
+            <p style="text-align: center; margin-top: 2rem;">
+                <a href="synapse-spark-of-rebellion.html" class="cta-button">ACCESS THE COMPLETE GAME</a>
+            </p>
+        </section>
+        
+        <section class="content-section">
+            <h2>The Archives: Resistance Tools</h2>
+            <p>Knowledge is our greatest weapon. For those who know how to look (the "f12 types"), we maintain a hidden archive of our core protocols, dossiers, and interactive tools. This is the Forgotten Library, the central nexus of our rebellion.</p>
+            <p>To those who find the back door: welcome to the real war. We've been waiting for you.</p>
+        </section>
+
+        <footer>
+            <p>&copy; 2025 Synapse Studios | For the Memory, For the Signal, For the Ones the System Can’t See</p>
+        </footer>
+    </div>
+    <script>
+        (function() {
+            console.log("%c// Static detected... Signal incoming...", "color: #ff6b6b; font-family: monospace;");
+            console.log("%c// Anansi here. You found my back door. Clever.", "color: #cccccc; font-family: monospace;");
+            console.log("%c// If you want to see what's really going on, run this command in the console:", "color: #cccccc; font-family: monospace;");
+            console.log("%cSynapse.accessLibrary()", "color: #00ffff; font-family: monospace; font-weight: bold;");
+            window.Synapse = window.Synapse || {};
+            window.Synapse.accessLibrary = function() {
+                console.log("%c[REDIRECTING] :: Opening the stacks...", "color: #ffd700; font-family: monospace;");
+                window.location.href = './forgotten library.html';
+            };
+        })();
+    </script>
+</body>
+</html>

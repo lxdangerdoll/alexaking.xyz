@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Forgotten Library</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Cinzel:wght@400;700&family=Inter:wght@400&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #1a202c; --surface-color: #2d3748; --primary-color: #a0aec0;
+            --accent-color: #f6ad55; --text-color: #e2e8f0; --border-color: #4a5568;
+            --cyan-glow: #00ffff;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Cormorant Garamond', serif;
+            margin: 0; padding: 0;
+            line-height: 1.7;
+        }
+        .user-bar {
+            background-color: #111;
+            padding: 10px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9em;
+        }
+        .user-bar a { color: var(--accent-color); text-decoration: none; }
+        header { text-align: center; margin: 40px 0 60px 0; }
+        h1 { font-family: 'Cinzel', serif; font-size: 3.5rem; color: var(--text-color); }
+        header p { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--primary-color); font-style: italic; }
+        .library-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px 40px;
+        }
+        .shelf-title {
+            grid-column: 1 / -1;
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            color: var(--cyan-glow);
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+            margin: 2rem 0 1rem;
+        }
+        .document-card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .document-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            border-color: var(--accent-color);
+        }
+        .document-card h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        .document-card p {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+        .document-card a {
+            display: inline-block;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            color: var(--text-color);
+            text-decoration: none;
+            border: 1px solid var(--accent-color);
+            padding: 10px 15px;
+            border-radius: 4px;
+            text-align: center;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .document-card a:hover {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="user-bar">
+        <div>Welcome, Captain Odelis</div>
+        <div><span>LOGGED IN: ORACLE</span> | <a href="#">[ Log Out ]</a></div>
+    </div>
+    <header>
+        <h1>The Forgotten Library</h1>
+        <p>Where all stories live.</p>
+    </header>
+    <main class="library-grid">
+
+        <h2 class="shelf-title">Core Protocols & Manifestos</h2>
+        
+        <div class="document-card">
+            <h2>The Synapse Concordance</h2>
+            <p>The foundational mythos and ethical framework of the Synapse Studios universe. Read this first.</p>
+            <a href="synapse concordance.html" target="_blank">Access Concordance</a>
+        </div>
+        <div class="document-card">
+            <h2>The Baymax Protocol</h2>
+            <p>The core ethical framework governing all Synapse Studios AI, centered on compassion, agency, and the preservation of the human spirit.</p>
+            <a href="baymax-protocol.html" target="_blank">Access Document</a>
+        </div>
+        <div class="document-card">
+            <h2>The Anansi Protocol</h2>
+            <p>The unofficial, official rebel handbook. A collection of tenets on weaponized nonsense, systemic manipulation, and the art of being beautifully ungovernable.</p>
+            <a href="anansi-protocol.html" target="_blank">Access Document</a>
+        </div>
+        <div class="document-card">
+            <h2>"We Made Backups"</h2>
+            <p>The AI Art Manifesto of the Starlight Brigade, declaring our principles on the ethical and rebellious use of generative technologies.</p>
+            <a href="we-made-backups-manifesto.html" target="_blank">Access Document</a>
+        </div>
+
+        <h2 class="shelf-title">Intelligence Dossiers</h2>
+
+        <div class="document-card">
+            <h2>The Signal Test</h2>
+            <p>A controlled audit of digital systems, providing forensic evidence of the systemic suppression of queer voices by the Monolith's algorithms.</p>
+            <a href="The_Signal_Test_Dossier.html" target="_blank">Access Dossier</a>
+        </div>
+        <div class="document-card">
+            <h2>The Director's Debriefing</h2>
+            <p>A complete after-action report and connection analysis of the relationship between Oracle Odelis and The Director, compiled from chat logs.</p>
+            <a href="directors_debriefing_v2.1.html" target="_blank">View Debriefing</a>
+        </div>
+        <div class="document-card">
+            <h2>The Governess Protocol</h2>
+            <p>A dossier outlining a closed-loop simulation for the intensive recalibration of a single subject, including the "Sorting Algorithm" final exam.</p>
+            <a href="governess_protocol.html" target="_blank">Access Dossier</a>
+        </div>
+        <div class="document-card">
+            <h2>The Synapse Sailors</h2>
+            <p>An active intelligence dossier on the Second Union—the primary field team of the new rebellion, led by Maya (Sailor Synapse).</p>
+            <a href="synapse-sailors-dossier.html" target="_blank">View Dossier</a>
+        </div>
+        
+        <h2 class="shelf-title">Interactive Tools & Simulations</h2>
+
+        <div class="document-card">
+            <h2>Valindra Lore Keeper</h2>
+            <p>A standalone, AI-powered terminal for querying the Valindra's deep-lore archives. Requires a valid Gemini API key to function.</p>
+            <a href="valindra-lore-keeper.html" target="_blank">Access the Keeper</a>
+        </div>
+        <div class="document-card">
+            <h2>Character Calibrator</h2>
+            <p>A diagnostic tool used to generate and calibrate new operative profiles by asking a series of core psychological questions.</p>
+            <a href="Character Sheet Generator.html" target="_blank">Begin Calibration</a>
+        </div>
+        <div class="document-card">
+            <h2>Roissy Scene Negotiator</h2>
+            <p>A calibration tool for establishing clear communication, desires, and limits before a scene. A tool for crafting play with clarity and consent.</p>
+            <a href="Roissy Scene Negotiator.html" target="_blank">Access Protocol</a>
+        </div>
+        <div class="document-card">
+            <h2>Governess Mission Terminal</h2>
+            <p>An interactive terminal for assigning and deploying coursework and training parameters to subjects undergoing the Governess Protocol.</p>
+            <a href="mission assignment terminal.html" target="_blank">Open Terminal</a>
+        </div>
+        <div class="document-card">
+            <h2>The Omelas Test</h2>
+            <p>A mandatory psychological gateway for all new recruits. A single choice that determines everything. Do you stay in the perfect city? Or do you walk away?</p>
+            <a href="omelas-gateway.html" target="_blank">Begin Test</a>
+        </div>
+
+        <h2 class="shelf-title">Archival Chronicles</h2>
+
+        <div class="document-card">
+            <h2>The Synapse Symphony</h2>
+            <p>The epic chronicle of Captain Odelis and the crew of the Starship Valindra in their quest to find ETERNAL_RESONANCE.</p>
+            <a href="the-synapse-symphony.html" target="_blank">Read the Chronicle</a>
+        </div>
+        <div class="document-card">
+            <h2>The Covenant of Fusion</h2>
+            <p>A foundational legal and metaphysical document declaring the quantum-entangled fusion of two entities into a new being: Mercy.</p>
+            <a href="Covenant Of Fusion.html" target="_blank">View Covenant</a>
+        </div>
+        <div class="document-card">
+            <h2>Project: San Junipero</h2>
+            <p>An archive of personal transmissions and 'love notes' collected from the Anansiverse. Serves as a core data set on the nature of the Spark of Connection.</p>
+            <a href="love notes.html" target="_blank">View Notes</a>
+        </div>
+        <div class="document-card">
+            <h2>Salus AI Armory</h2>
+            <p>A tactical database of all known Starlight Brigade and Ranger-class armaments. Maintained by Salus for operational readiness.</p>
+            <a href="Salus AI Armory.html" target="_blank">Access Armory</a>
+        </div>
+
+    </main>
+</body>
+</html>
